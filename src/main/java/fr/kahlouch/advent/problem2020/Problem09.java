@@ -42,32 +42,7 @@ public class Problem09 {
 
 
     public static String rule2(List<String> input) {
-        List<Integer> testNumbers = new ArrayList<>();
-        for (int i = 0; i < 25; ++i) {
-            testNumbers.add(Integer.parseInt(input.get(i)));
-        }
-
-        int testInput = -1;
-        boolean ok;
-        for (int i = 25; i < input.size(); ++i) {
-            ok = false;
-            testInput = Integer.parseInt(input.get(i));
-            bigLoop:
-            for (int a = 0; a < testNumbers.size() - 1; ++a) {
-                for (int b = a + 1; b < testNumbers.size(); ++b) {
-                    if ((testNumbers.get(a) + testNumbers.get(b)) == testInput) {
-                        ok = true;
-                        break bigLoop;
-                    }
-                }
-            }
-            if (ok) {
-                testNumbers.remove(0);
-                testNumbers.add(testInput);
-            } else {
-                break;
-            }
-        }
+        int referenceNumber = Integer.parseInt(rule1(input));
 
         int sum;
         List<Integer> resp = new ArrayList<>();
@@ -77,9 +52,9 @@ public class Problem09 {
             for (int j = i + 1; j < input.size(); ++j) {
                 resp.add(Integer.parseInt(input.get(j)));
                 sum = resp.stream().reduce(0, Integer::sum);
-                if(sum == testInput) {
+                if(sum == referenceNumber) {
                     break bigLoop2;
-                } else if(sum > testInput) {
+                } else if(sum > referenceNumber) {
                     break;
                 }
             }
