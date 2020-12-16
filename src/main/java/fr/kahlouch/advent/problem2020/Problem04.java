@@ -1,6 +1,7 @@
 package fr.kahlouch.advent.problem2020;
 
-import fr.kahlouch.advent.ProblemResolver;
+import fr.kahlouch.advent.Problem;
+import fr.kahlouch.advent.ProblemSolver;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,12 +9,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
-public class Problem04 {
+public class Problem04 extends Problem<Integer> {
     public static void main(String[] args) {
-        new ProblemResolver("problem2020/problem04.txt", Problem04::rule1, Problem04::rule2).resolve();
+        ProblemSolver.solve("problem2020/problem04.txt", Problem04.class);
     }
 
-    public static String rule1(List<String> input) {
+    @Override
+    public Integer rule1() {
         List<String> mandatoryKeys = List.of(
                 "byr",
                 "iyr",
@@ -46,10 +48,11 @@ public class Problem04 {
                 count++;
             }
         }
-        return count + "";
+        return count;
     }
 
-    public static String rule2(List<String> input) {
+    @Override
+    public Integer rule2() {
         Map<String, Predicate<String>> validation = Map.ofEntries(
                 Map.entry("byr", s -> {
                     if (s.matches("\\d{4}")) {
@@ -111,6 +114,6 @@ public class Problem04 {
                 count++;
             }
         }
-        return count + "";
+        return count;
     }
 }

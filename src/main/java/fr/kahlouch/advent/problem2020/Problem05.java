@@ -1,6 +1,7 @@
 package fr.kahlouch.advent.problem2020;
 
-import fr.kahlouch.advent.ProblemResolver;
+import fr.kahlouch.advent.Problem;
+import fr.kahlouch.advent.ProblemSolver;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,9 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-public class Problem05 {
+public class Problem05 extends Problem<Integer> {
     public static void main(String[] args) {
-        new ProblemResolver("problem2020/problem05.txt", Problem05::rule1, Problem05::rule2).resolve();
+        ProblemSolver.solve("problem2020/problem05.txt", Problem05.class);
     }
 
     private static int[] initArray(int size) {
@@ -38,7 +39,8 @@ public class Problem05 {
         );
     }
 
-    public static String rule1(List<String> input) {
+    @Override
+    public Integer rule1() {
         Map<Character, Function<int[], int[]>> actionMap = getActionMap();
         int max = 0;
         for (String line : input) {
@@ -55,10 +57,11 @@ public class Problem05 {
                 max = result;
             }
         }
-        return max + "";
+        return max;
     }
 
-    public static String rule2(List<String> input) {
+    @Override
+    public Integer rule2() {
         Map<Character, Function<int[], int[]>> actionMap = getActionMap();
         List<Integer> ids = new ArrayList<>();
         for (String line : input) {
@@ -76,9 +79,9 @@ public class Problem05 {
         ids.sort(Integer::compareTo);
         for(int i=0; i<ids.size()-1; ++i) {
             if(ids.get(i+1) != ids.get(i) + 1) {
-                return (ids.get(i) + 1) + "";
+                return (ids.get(i) + 1);
             }
         }
-        return "NOTHING";
+        return null;
     }
 }

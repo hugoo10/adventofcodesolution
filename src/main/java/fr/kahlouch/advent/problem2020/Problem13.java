@@ -1,6 +1,7 @@
 package fr.kahlouch.advent.problem2020;
 
-import fr.kahlouch.advent.ProblemResolver;
+import fr.kahlouch.advent.Problem;
+import fr.kahlouch.advent.ProblemSolver;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -8,23 +9,25 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class Problem13 {
+public class Problem13 extends Problem<BigInteger> {
     public static void main(String[] args) {
-        new ProblemResolver("problem2020/problem13.txt", Problem13::rule1, Problem13::rule2).resolve();
+        ProblemSolver.solve("problem2020/problem13.txt", Problem13.class);
     }
 
-    private static String rule1(List<String> input) {
+    @Override
+    public BigInteger rule1() {
         long nb = Long.parseLong(input.get(0));
         return Arrays.stream(input.get(1).split(","))
                 .filter(s -> !s.equals("x"))
                 .map(Long::parseLong)
                 .map(b -> Map.entry(b, b - (nb % b)))
                 .min(Map.Entry.comparingByValue())
-                .map(e -> (e.getKey() * e.getValue()) + "")
+                .map(e -> BigInteger.valueOf(e.getKey() * e.getValue()))
                 .get();
     }
 
-    private static String rule2(List<String> input) {
+    @Override
+    public BigInteger rule2() {
         List<String> buses = Arrays.asList(input.get(1).split(","));
         List<Map.Entry<Long, Long>> list = new ArrayList<>();
         for (int i = 0; i < buses.size(); ++i) {
@@ -41,6 +44,6 @@ public class Problem13 {
             BigInteger xi = Ni.modInverse(ni);
             solutions.add(BigInteger.ONE.multiply(bi).multiply(Ni).multiply(xi));
         });
-        return solutions.stream().reduce(BigInteger.ONE, BigInteger::add).mod(N) + "";
+        return solutions.stream().reduce(BigInteger.ONE, BigInteger::add).mod(N);
     }
 }

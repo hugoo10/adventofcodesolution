@@ -1,15 +1,16 @@
 package fr.kahlouch.advent.problem2020;
 
-import fr.kahlouch.advent.ProblemResolver;
+import fr.kahlouch.advent.Problem;
+import fr.kahlouch.advent.ProblemSolver;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class Problem06 {
+public class Problem06 extends Problem<Integer> {
     public static void main(String[] args) {
-        new ProblemResolver("problem2020/problem06.txt", Problem06::rule1, Problem06::rule2).resolve();
+        ProblemSolver.solve("problem2020/problem06.txt", Problem06.class);
     }
 
 
@@ -35,12 +36,14 @@ public class Problem06 {
         return answers;
     }
 
-    public static String rule1(List<String> input) {
+    @Override
+    public Integer rule1() {
         List<Map<Character, Integer>> answers = getAnswers(input);
-        return answers.stream().map(Map::size).reduce(0, Integer::sum) + "";
+        return answers.stream().map(Map::size).reduce(0, Integer::sum);
     }
 
-    public static String rule2(List<String> input) {
+    @Override
+    public Integer rule2() {
         List<Map<Character, Integer>> answers = getAnswers(input);
         List<Integer> count = new ArrayList<>();
         count.add(0);
@@ -62,6 +65,6 @@ public class Problem06 {
                 }
             }
         }
-        return total + "";
+        return total;
     }
 }

@@ -1,17 +1,19 @@
 package fr.kahlouch.advent.problem2020;
 
-import fr.kahlouch.advent.ProblemResolver;
+import fr.kahlouch.advent.Problem;
+import fr.kahlouch.advent.ProblemSolver;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class Problem08 {
+public class Problem08 extends Problem<Integer> {
     public static void main(String[] args) {
-        new ProblemResolver("problem2020/problem08.txt", Problem08::rule1, Problem08::rule2).resolve();
+        ProblemSolver.solve("problem2020/problem08.txt", Problem08.class);
     }
 
-    private static String rule1(List<String> input) {
+    @Override
+    public Integer rule1() {
         List<Command> commands = getCommands(input, -1);
         List<Command> historic = new ArrayList<>();
         int idx = 0;
@@ -32,15 +34,15 @@ public class Problem08 {
             historic.add(toExecute);
         } while (ok && idx < input.size());
 
-        return value + "";
+        return value;
     }
 
-    private static String rule2(List<String> input) {
+    @Override
+    public Integer rule2() {
         boolean ok;
         int toSwap = 0;
         int value;
         do {
-            System.out.println(toSwap + " " + input.size());
             List<Command> commands = getCommands(input, toSwap);
             List<Command> historic = new ArrayList<>();
             int idx = 0;
@@ -60,7 +62,7 @@ public class Problem08 {
             toSwap++;
 
         } while (!ok && toSwap < input.size());
-        return value + "";
+        return value;
     }
 
     public static List<Command> getCommands(List<String> input, int toSwap) {

@@ -1,26 +1,27 @@
 package fr.kahlouch.advent.problem2020;
 
-import fr.kahlouch.advent.ProblemResolver;
+import fr.kahlouch.advent.Problem;
+import fr.kahlouch.advent.ProblemSolver;
 import org.apache.commons.lang3.Range;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Problem16 {
+public class Problem16 extends Problem<Long> {
     public static void main(String[] args) {
-
-        new ProblemResolver("problem2020/problem16.txt", Problem16::rule1, Problem16::rule2).resolve();
+        ProblemSolver.solve("problem2020/problem16.txt", Problem16.class);
     }
 
-
-    private static String rule1(List<String> input) {
+    @Override
+    public Long rule1() {
         Problem problem = new Problem(input);
         List<Integer> notValids = new ArrayList<>();
         problem.nearbyTickets.forEach(ticket -> notValids.addAll(ticket.validate(problem.rules)));
-        return notValids.stream().reduce(0, Integer::sum) + "";
+        return (long) notValids.stream().reduce(0, Integer::sum);
     }
 
-    private static String rule2(List<String> input) {
+    @Override
+    public Long rule2() {
         Problem problem = new Problem(input);
         List<Ticket> validTickets = problem.nearbyTickets.stream()
                 .filter(ticket -> ticket.validate(problem.rules).isEmpty())
@@ -53,12 +54,12 @@ public class Problem16 {
 
         long result = 1;
         for (int i = 0; i < problem.rules.size(); ++i) {
-            if(problem.rules.get(i).name.startsWith("departure")) {
+            if (problem.rules.get(i).name.startsWith("departure")) {
 
                 result *= problem.myTicket.values.get(linked.get(i));
             }
         }
-        return result + "";
+        return result;
     }
 
     static class Problem {

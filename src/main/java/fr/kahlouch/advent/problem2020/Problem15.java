@@ -1,15 +1,16 @@
 package fr.kahlouch.advent.problem2020;
 
-import fr.kahlouch.advent.ProblemResolver;
+import fr.kahlouch.advent.Problem;
+import fr.kahlouch.advent.ProblemSolver;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Problem15 {
+public class Problem15 extends Problem<Long> {
     public static void main(String[] args) {
-        new ProblemResolver("problem2020/problem15.txt", Problem15::rule1, Problem15::rule2).resolve();
+        ProblemSolver.solve("problem2020/problem15.txt", Problem15.class);
     }
 
     private static Map.Entry<Map.Entry<Integer, Long>, Map<Long, List<Integer>>> init(List<String> input) {
@@ -30,7 +31,7 @@ public class Problem15 {
         return Map.entry(Map.entry(count, last), map);
     }
 
-    private static String resolve(List<String> input, int nieme) {
+    private Long resolve(int nieme) {
         final Map.Entry<Map.Entry<Integer, Long>, Map<Long, List<Integer>>> entry = init(input);
         final Map<Long, List<Integer>> map = entry.getValue();
         long last = entry.getKey().getValue();
@@ -54,14 +55,16 @@ public class Problem15 {
         }
 
 
-        return last + "";
+        return last;
     }
 
-    private static String rule1(List<String> input) {
-        return resolve(input, 2020);
+    @Override
+    public Long rule1() {
+        return resolve(2020);
     }
 
-    private static String rule2(List<String> input) {
-        return resolve(input, 30_000_000);
+    @Override
+    public Long rule2() {
+        return resolve(30_000_000);
     }
 }

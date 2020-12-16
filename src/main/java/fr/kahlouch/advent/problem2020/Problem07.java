@@ -1,15 +1,16 @@
 package fr.kahlouch.advent.problem2020;
 
-import fr.kahlouch.advent.ProblemResolver;
+import fr.kahlouch.advent.Problem;
+import fr.kahlouch.advent.ProblemSolver;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Problem07 {
+public class Problem07 extends Problem<Integer> {
     public static void main(String[] args) {
-        new ProblemResolver("problem2020/problem07.txt", Problem07::rule1, Problem07::rule2).resolve();
+        ProblemSolver.solve("problem2020/problem07.txt", Problem07.class);
     }
 
 
@@ -19,7 +20,8 @@ public class Problem07 {
         return bags;
     }
 
-    public static String rule1(List<String> input) {
+    @Override
+    public Integer rule1() {
         Map<String, Bag> bags = getBags(input);
         int count = 0;
         for (Map.Entry<String, Bag> entry : bags.entrySet()) {
@@ -27,13 +29,14 @@ public class Problem07 {
                 count++;
             }
         }
-        return count + "";
+        return count;
     }
 
-    public static String rule2(List<String> input) {
+    @Override
+    public Integer rule2() {
         Map<String, Bag> bags = getBags(input);
         Bag shiny = bags.get("shiny gold");
-        return count(shiny, bags, 1) + "";
+        return count(shiny, bags, 1);
     }
 
     public static int count(Bag bag, Map<String, Bag> bags, int nbParent) {

@@ -1,14 +1,15 @@
 package fr.kahlouch.advent.problem2020;
 
-import fr.kahlouch.advent.ProblemResolver;
+import fr.kahlouch.advent.Problem;
+import fr.kahlouch.advent.ProblemSolver;
 
 import java.math.BigInteger;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Problem14 {
+public class Problem14 extends Problem<BigInteger> {
     public static void main(String[] args) {
-        new ProblemResolver("problem2020/problem14.txt", Problem14::rule1, Problem14::rule2).resolve();
+        ProblemSolver.solve("problem2020/problem14.txt", Problem14.class);
     }
 
     private static Map<String, Map<BigInteger, BigInteger>> getParsedProblem(List<String> input) {
@@ -27,7 +28,8 @@ public class Problem14 {
         return parsedProblem;
     }
 
-    private static String rule1(List<String> input) {
+    @Override
+    public BigInteger rule1() {
         Map<String, Map<BigInteger, BigInteger>> parsedProblem = getParsedProblem(input);
         Map<BigInteger, BigInteger> resultMap = new LinkedHashMap<>();
 
@@ -35,10 +37,11 @@ public class Problem14 {
             final char[] mask = key.toCharArray();
             value.forEach((idx, val) -> resultMap.put(idx, applyMask(mask, val)));
         });
-        return resultMap.values().stream().reduce(BigInteger.ZERO, BigInteger::add) + "";
+        return resultMap.values().stream().reduce(BigInteger.ZERO, BigInteger::add);
     }
 
-    private static String rule2(List<String> input) {
+    @Override
+    public BigInteger rule2() {
         Map<String, Map<BigInteger, BigInteger>> parsedProblem = getParsedProblem(input);
         Map<BigInteger, BigInteger> resultMap = new LinkedHashMap<>();
 
@@ -49,7 +52,7 @@ public class Problem14 {
                 addresses.forEach(address -> resultMap.put(address, val));
             });
         });
-        return resultMap.values().stream().reduce(BigInteger.ZERO, BigInteger::add) + "";
+        return resultMap.values().stream().reduce(BigInteger.ZERO, BigInteger::add);
     }
 
 

@@ -1,16 +1,17 @@
 package fr.kahlouch.advent.problem2020;
 
-import fr.kahlouch.advent.ProblemResolver;
+import fr.kahlouch.advent.Problem;
+import fr.kahlouch.advent.ProblemSolver;
 
 import java.awt.geom.Point2D;
-import java.util.List;
 
-public class Problem12 {
+public class Problem12 extends Problem<Double> {
     public static void main(String[] args) {
-        new ProblemResolver("problem2020/problem12.txt", Problem12::rule1, Problem12::rule2).resolve();
+        ProblemSolver.solve("problem2020/problem12.txt", Problem12.class);
     }
 
-    private static String rule1(List<String> input) {
+    @Override
+    public Double rule1() {
         Point2D pos = new Point2D.Double();
         double angleInDegree = 0;
 
@@ -33,10 +34,11 @@ public class Problem12 {
             }
         }
 
-        return Math.abs(pos.getX()) + Math.abs(pos.getY()) + "";
+        return Math.abs(pos.getX()) + Math.abs(pos.getY());
     }
 
-    private static String rule2(List<String> input) {
+    @Override
+    public Double rule2() {
         Point2D pos = new Point2D.Double();
         Point2D wp = new Point2D.Double(10, 1);
         double angleInDegree = 0;
@@ -65,6 +67,6 @@ public class Problem12 {
             }
         }
 
-        return Math.abs(pos.getX()) + Math.abs(pos.getY()) + "";
+        return Math.abs(pos.getX()) + Math.abs(pos.getY());
     }
 }

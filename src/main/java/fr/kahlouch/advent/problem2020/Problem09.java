@@ -1,16 +1,18 @@
 package fr.kahlouch.advent.problem2020;
 
-import fr.kahlouch.advent.ProblemResolver;
+import fr.kahlouch.advent.Problem;
+import fr.kahlouch.advent.ProblemSolver;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Problem09 {
+public class Problem09 extends Problem<Integer> {
     public static void main(String[] args) {
-        new ProblemResolver("problem2020/problem09.txt", Problem09::rule1, Problem09::rule2).resolve();
+        ProblemSolver.solve("problem2020/problem09.txt", Problem09.class);
     }
 
-    public static String rule1(List<String> input) {
+    @Override
+    public Integer rule1() {
         List<Integer> testNumbers = new ArrayList<>();
         for (int i = 0; i < 25; ++i) {
             testNumbers.add(Integer.parseInt(input.get(i)));
@@ -37,28 +39,30 @@ public class Problem09 {
                 break;
             }
         }
-        return testInput + "";
+        return testInput;
     }
 
 
-    public static String rule2(List<String> input) {
-        int referenceNumber = Integer.parseInt(rule1(input));
+    @Override
+    public Integer rule2() {
+        int referenceNumber = rule1();
 
         int sum;
         List<Integer> resp = new ArrayList<>();
-        bigLoop2:for (int i = 0; i < input.size() - 1; ++i) {
+        bigLoop2:
+        for (int i = 0; i < input.size() - 1; ++i) {
             resp.clear();
             resp.add(Integer.parseInt(input.get(i)));
             for (int j = i + 1; j < input.size(); ++j) {
                 resp.add(Integer.parseInt(input.get(j)));
                 sum = resp.stream().reduce(0, Integer::sum);
-                if(sum == referenceNumber) {
+                if (sum == referenceNumber) {
                     break bigLoop2;
-                } else if(sum > referenceNumber) {
+                } else if (sum > referenceNumber) {
                     break;
                 }
             }
         }
-        return (resp.stream().min(Integer::compare).get() + resp.stream().max(Integer::compare).get()) + "";
+        return (resp.stream().min(Integer::compare).get() + resp.stream().max(Integer::compare).get());
     }
 }

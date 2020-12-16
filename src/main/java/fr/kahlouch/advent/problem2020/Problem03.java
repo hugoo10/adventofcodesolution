@@ -1,17 +1,19 @@
 package fr.kahlouch.advent.problem2020;
 
-import fr.kahlouch.advent.ProblemResolver;
+import fr.kahlouch.advent.Problem;
+import fr.kahlouch.advent.ProblemSolver;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class Problem03 {
+public class Problem03 extends Problem<Long> {
     public static void main(String[] args) {
-        new ProblemResolver("problem2020/problem03.txt", Problem03::rule1, Problem03::rule2).resolve();
+        ProblemSolver.solve("problem2020/problem03.txt", Problem03.class);
     }
 
-    public static String rule1(List<String> input) {
+    @Override
+    public Long rule1() {
         List<List<Boolean>> map = new ArrayList<>();
         for (String line : input) {
             List<Boolean> treeLine = new ArrayList<>();
@@ -26,17 +28,18 @@ public class Problem03 {
         int x = 0;
         int y = 0;
         int count = 0;
-        while(y < input.size()) {
-            if(map.get(y).get(x)) {
+        while (y < input.size()) {
+            if (map.get(y).get(x)) {
                 count++;
             }
             x += 3;
             y += 1;
         }
-        return count + "";
+        return (long) count;
     }
 
-    public static String rule2(List<String> input) {
+    @Override
+    public Long rule2() {
         List<List<Boolean>> map = new ArrayList<>();
         for (String line : input) {
             List<Boolean> treeLine = new ArrayList<>();
@@ -56,7 +59,7 @@ public class Problem03 {
                 Map.entry(1, 2)
         );
 
-        for(Map.Entry<Integer, Integer> entry:steps) {
+        for (Map.Entry<Integer, Integer> entry : steps) {
             int x = 0;
             int y = 0;
             int count = 0;
@@ -67,10 +70,10 @@ public class Problem03 {
                 x += entry.getKey();
                 y += entry.getValue();
             }
-            results.add((long)count);
+            results.add((long) count);
         }
 
-        return results.stream().reduce(1L, (a,b) -> a *b) + "";
+        return results.stream().reduce(1L, (a, b) -> a * b);
     }
 }
 
