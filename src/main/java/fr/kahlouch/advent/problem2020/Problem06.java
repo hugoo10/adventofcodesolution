@@ -1,7 +1,6 @@
 package fr.kahlouch.advent.problem2020;
 
 import fr.kahlouch.advent.Problem;
-import fr.kahlouch.advent.ProblemSolver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,11 +8,6 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class Problem06 extends Problem<Integer> {
-    public static void main(String[] args) {
-        ProblemSolver.solve("problem2020/problem06.txt", Problem06.class);
-    }
-
-
     public static List<Map<Character, Integer>> getAnswers(List<String> input) {
         List<Map<Character, Integer>> answers = new ArrayList<>();
 

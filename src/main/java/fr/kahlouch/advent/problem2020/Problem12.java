@@ -1,15 +1,10 @@
 package fr.kahlouch.advent.problem2020;
 
 import fr.kahlouch.advent.Problem;
-import fr.kahlouch.advent.ProblemSolver;
 
 import java.awt.geom.Point2D;
 
 public class Problem12 extends Problem<Double> {
-    public static void main(String[] args) {
-        ProblemSolver.solve("problem2020/problem12.txt", Problem12.class);
-    }
-
     @Override
     public Double rule1() {
         Point2D pos = new Point2D.Double();

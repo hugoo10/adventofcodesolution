@@ -1,7 +1,6 @@
 package fr.kahlouch.advent.problem2020;
 
 import fr.kahlouch.advent.Problem;
-import fr.kahlouch.advent.ProblemSolver;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,10 +9,6 @@ import java.util.Map;
 import java.util.function.Predicate;
 
 public class Problem04 extends Problem<Integer> {
-    public static void main(String[] args) {
-        ProblemSolver.solve("problem2020/problem04.txt", Problem04.class);
-    }
-
     @Override
     public Integer rule1() {
         List<String> mandatoryKeys = List.of(

@@ -1,7 +1,6 @@
 package fr.kahlouch.advent.problem2020;
 
 import fr.kahlouch.advent.Problem;
-import fr.kahlouch.advent.ProblemSolver;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,10 +9,6 @@ import java.util.Map;
 import java.util.function.Function;
 
 public class Problem05 extends Problem<Integer> {
-    public static void main(String[] args) {
-        ProblemSolver.solve("problem2020/problem05.txt", Problem05.class);
-    }
-
     private static int[] initArray(int size) {
         int[] array = new int[size];
         for (int i = 0; i < size; ++i) {

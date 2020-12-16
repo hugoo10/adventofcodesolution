@@ -1,7 +1,6 @@
 package fr.kahlouch.advent.problem2020;
 
 import fr.kahlouch.advent.Problem;
-import fr.kahlouch.advent.ProblemSolver;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -10,10 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 public class Problem13 extends Problem<BigInteger> {
-    public static void main(String[] args) {
-        ProblemSolver.solve("problem2020/problem13.txt", Problem13.class);
-    }
-
     @Override
     public BigInteger rule1() {
         long nb = Long.parseLong(input.get(0));

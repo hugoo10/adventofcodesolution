@@ -1,7 +1,6 @@
 package fr.kahlouch.advent.problem2020;
 
 import fr.kahlouch.advent.Problem;
-import fr.kahlouch.advent.ProblemSolver;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,10 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 public class Problem15 extends Problem<Long> {
-    public static void main(String[] args) {
-        ProblemSolver.solve("problem2020/problem15.txt", Problem15.class);
-    }
-
     private static Map.Entry<Map.Entry<Integer, Long>, Map<Long, List<Integer>>> init(List<String> input) {
         long last = -1;
         int count = 0;

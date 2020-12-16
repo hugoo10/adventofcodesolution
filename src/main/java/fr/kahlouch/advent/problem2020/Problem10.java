@@ -1,7 +1,6 @@
 package fr.kahlouch.advent.problem2020;
 
 import fr.kahlouch.advent.Problem;
-import fr.kahlouch.advent.ProblemSolver;
 
 import java.math.BigInteger;
 import java.util.*;
@@ -9,10 +8,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Problem10 extends Problem<BigInteger> {
-    public static void main(String[] args) {
-        ProblemSolver.solve("problem2020/problem10.txt", Problem10.class);
-    }
-
     private static List<Integer> getOutlets(List<String> input) {
         return input.stream().map(Integer::parseInt).sorted().collect(Collectors.toList());
     }

@@ -1,17 +1,11 @@
 package fr.kahlouch.advent.problem2020;
 
 import fr.kahlouch.advent.Problem;
-import fr.kahlouch.advent.ProblemSolver;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class Problem01 extends Problem<Integer> {
-
-    public static void main(String[] args) {
-        ProblemSolver.solve("problem2020/problem01.txt", Problem01.class);
-    }
-
     @Override
     public Integer rule1() {
         List<Integer> list = input.stream().map(Integer::parseInt).collect(Collectors.toList());

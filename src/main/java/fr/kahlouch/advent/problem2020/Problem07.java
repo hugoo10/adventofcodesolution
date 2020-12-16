@@ -1,7 +1,6 @@
 package fr.kahlouch.advent.problem2020;
 
 import fr.kahlouch.advent.Problem;
-import fr.kahlouch.advent.ProblemSolver;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,11 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 public class Problem07 extends Problem<Integer> {
-    public static void main(String[] args) {
-        ProblemSolver.solve("problem2020/problem07.txt", Problem07.class);
-    }
-
-
     public static Map<String, Bag> getBags(List<String> input) {
         Map<String, Bag> bags = new HashMap<>();
         input.stream().map(Bag::new).forEach(b -> bags.put(b.color, b));

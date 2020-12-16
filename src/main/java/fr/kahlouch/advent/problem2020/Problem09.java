@@ -1,16 +1,11 @@
 package fr.kahlouch.advent.problem2020;
 
 import fr.kahlouch.advent.Problem;
-import fr.kahlouch.advent.ProblemSolver;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Problem09 extends Problem<Integer> {
-    public static void main(String[] args) {
-        ProblemSolver.solve("problem2020/problem09.txt", Problem09.class);
-    }
-
     @Override
     public Integer rule1() {
         List<Integer> testNumbers = new ArrayList<>();

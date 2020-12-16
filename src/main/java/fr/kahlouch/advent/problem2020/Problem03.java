@@ -1,17 +1,12 @@
 package fr.kahlouch.advent.problem2020;
 
 import fr.kahlouch.advent.Problem;
-import fr.kahlouch.advent.ProblemSolver;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class Problem03 extends Problem<Long> {
-    public static void main(String[] args) {
-        ProblemSolver.solve("problem2020/problem03.txt", Problem03.class);
-    }
-
     @Override
     public Long rule1() {
         List<List<Boolean>> map = new ArrayList<>();

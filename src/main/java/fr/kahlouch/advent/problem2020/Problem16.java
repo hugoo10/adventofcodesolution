@@ -1,17 +1,12 @@
 package fr.kahlouch.advent.problem2020;
 
 import fr.kahlouch.advent.Problem;
-import fr.kahlouch.advent.ProblemSolver;
 import org.apache.commons.lang3.Range;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class Problem16 extends Problem<Long> {
-    public static void main(String[] args) {
-        ProblemSolver.solve("problem2020/problem16.txt", Problem16.class);
-    }
-
     List<Rule> rules;
     List<Ticket> nearbyTickets;
     Ticket myTicket;
