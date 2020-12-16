@@ -17,7 +17,11 @@ public abstract class Problem<RETURN_TYPE> {
         while (sc.hasNextLine()) {
             input.add(sc.nextLine());
         }
+        setupData();
         return this;
+    }
+
+    public void setupData() {
     }
 
     public abstract RETURN_TYPE rule1();

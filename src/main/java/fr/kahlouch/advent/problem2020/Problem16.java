@@ -12,23 +12,44 @@ public class Problem16 extends Problem<Long> {
         ProblemSolver.solve("problem2020/problem16.txt", Problem16.class);
     }
 
+    List<Rule> rules;
+    List<Ticket> nearbyTickets;
+    Ticket myTicket;
+
+    @Override
+    public void setupData() {
+        this.rules = new ArrayList<>();
+        this.nearbyTickets = new ArrayList<>();
+        int i = 0;
+        for (; i < input.size(); ++i) {
+            if (input.get(i).isEmpty()) {
+                i += 2;
+                break;
+            }
+            this.rules.add(new Rule(input.get(i)));
+        }
+        this.myTicket = new Ticket(input.get(i));
+        i += 3;
+        for (; i < input.size(); ++i) {
+            this.nearbyTickets.add(new Ticket(input.get(i)));
+        }
+    }
+
     @Override
     public Long rule1() {
-        Problem problem = new Problem(input);
         List<Integer> notValids = new ArrayList<>();
-        problem.nearbyTickets.forEach(ticket -> notValids.addAll(ticket.validate(problem.rules)));
+        this.nearbyTickets.forEach(ticket -> notValids.addAll(ticket.validate(this.rules)));
         return (long) notValids.stream().reduce(0, Integer::sum);
     }
 
     @Override
     public Long rule2() {
-        Problem problem = new Problem(input);
-        List<Ticket> validTickets = problem.nearbyTickets.stream()
-                .filter(ticket -> ticket.validate(problem.rules).isEmpty())
+        List<Ticket> validTickets = this.nearbyTickets.stream()
+                .filter(ticket -> ticket.validate(this.rules).isEmpty())
                 .collect(Collectors.toList());
         Map<Integer, List<Integer>> list = new HashMap<>();
-        for (int i = 0; i < problem.rules.size(); ++i) {
-            Rule rule = problem.rules.get(i);
+        for (int i = 0; i < this.rules.size(); ++i) {
+            Rule rule = this.rules.get(i);
             for (int j = 0; j < validTickets.get(i).values.size(); ++j) {
                 final int idx = j;
                 if (validTickets.parallelStream().allMatch(t -> rule.respect(t.values.get(idx)))) {
@@ -53,37 +74,13 @@ public class Problem16 extends Problem<Long> {
         } while (entries.stream().anyMatch(e -> !e.getValue().isEmpty()));
 
         long result = 1;
-        for (int i = 0; i < problem.rules.size(); ++i) {
-            if (problem.rules.get(i).name.startsWith("departure")) {
+        for (int i = 0; i < this.rules.size(); ++i) {
+            if (this.rules.get(i).name.startsWith("departure")) {
 
-                result *= problem.myTicket.values.get(linked.get(i));
+                result *= this.myTicket.values.get(linked.get(i));
             }
         }
         return result;
-    }
-
-    static class Problem {
-        List<Rule> rules;
-        List<Ticket> nearbyTickets;
-        Ticket myTicket;
-
-        public Problem(List<String> input) {
-            this.rules = new ArrayList<>();
-            this.nearbyTickets = new ArrayList<>();
-            int i = 0;
-            for (; i < input.size(); ++i) {
-                if (input.get(i).isEmpty()) {
-                    i += 2;
-                    break;
-                }
-                this.rules.add(new Rule(input.get(i)));
-            }
-            this.myTicket = new Ticket(input.get(i));
-            i += 3;
-            for (; i < input.size(); ++i) {
-                this.nearbyTickets.add(new Ticket(input.get(i)));
-            }
-        }
     }
 
     static class Rule {
