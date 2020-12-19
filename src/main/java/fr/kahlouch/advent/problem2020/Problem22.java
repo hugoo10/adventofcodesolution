@@ -4,6 +4,11 @@ import fr.kahlouch.advent.Problem;
 
 public class Problem22 extends Problem<Integer> {
     @Override
+    public void setupData() {
+
+    }
+
+    @Override
     public Integer rule1() {
         return null;
     }

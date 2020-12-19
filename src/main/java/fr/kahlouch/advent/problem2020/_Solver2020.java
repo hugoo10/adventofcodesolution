@@ -35,7 +35,7 @@ public class _Solver2020 {
     );
 
     public static void main(String[] args) {
-        int toSolve = 15;
+        int toSolve = Integer.parseInt(args[0]);
         ProblemSolver.solve(String.format("%s/problem%02d.txt", folder, toSolve), problems.get(toSolve - 1));
     }
 
