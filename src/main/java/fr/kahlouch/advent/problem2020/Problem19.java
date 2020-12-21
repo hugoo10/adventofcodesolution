@@ -6,37 +6,42 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Problem19 extends Problem<Integer> {
-    private Map<String, List<Rule>> rulesStr;
+    private Map<String, MultiRule> rules;
     private List<String> toTest;
 
 
     @Override
     public void setupData() {
-        this.rulesStr = new TreeMap<>();
+        this.rules = new TreeMap<>();
         this.toTest = new ArrayList<>();
         int i = 0;
         for (; i < this.input.size(); ++i) {
             if (this.input.get(i).isEmpty()) break;
             String[] split = input.get(i).split(":");
-            rulesStr.put(split[0], Arrays.stream(split[1].strip().split("\\|"))
-                    .map(Rule::new)
-                    .collect(Collectors.toList()));
+            rules.put(split[0], new MultiRule(
+                    Arrays.stream(split[1].strip().split("\\|"))
+                            .map(Rule::new)
+                            .collect(Collectors.toList()))
+            );
         }
         i++;
         for (; i < this.input.size(); ++i) {
             this.toTest.add(this.input.get(i));
         }
-        for (List<Rule> rules : rulesStr.values()) {
-            for (Rule rule : rules) {
-                rule.findSubRules(rulesStr);
+        toTest.sort(String::compareTo);
+        for (MultiRule multiRule : rules.values()) {
+            for (Rule rule : multiRule.rules) {
+                rule.findSubRules(this.rules);
             }
         }
     }
 
     @Override
     public Integer rule1() {
-        List<Result> result = this.rulesStr.get("6").get(0).getRules();
-        return null;
+        Set<String> result = new TreeSet<>(this.rules.get("0").getRules());
+        List<String> matching = result.stream().filter(toTest::contains).collect(Collectors.toList());
+        matching.sort(String::compareTo);
+        return matching.size();
     }
 
     @Override
@@ -45,9 +50,12 @@ public class Problem19 extends Problem<Integer> {
     }
 
     static class Rule {
-        Character letter;
+        //pre
         List<String> rulesStr;
-        List<List<Rule>> rules;
+        Character letter;
+
+        //post
+        List<Expression> expressions;
 
         public Rule(String rule) {
             String stripped = rule.strip();
@@ -58,37 +66,73 @@ public class Problem19 extends Problem<Integer> {
             }
         }
 
-        private void findSubRules(Map<String, List<Rule>> map) {
+        private void findSubRules(Map<String, MultiRule> map) {
+            this.expressions = new ArrayList<>();
             if (this.rulesStr != null) {
-                this.rules = this.rulesStr.stream()
+                this.rulesStr.stream()
                         .map(map::get)
-                        .collect(Collectors.toList());
+                        .map(Expression::new)
+                        .forEach(expressions::add);
+
+            } else {
+                this.expressions.add(new Expression(this.letter));
             }
         }
 
-        private List<Result> getRules() {
-            if (this.letter != null) {
-                return List.of(new Result("" + this.letter));
+        private List<String> getRules() {
+            List<List<String>> ordered = new ArrayList<>();
+            for (Expression expression : this.expressions) {
+                List<String> subs = expression.getRules();
+                ordered.add(subs);
             }
+            int size = ordered.stream().map(List::size).reduce(1, (a, b) -> a * b);
 
-            List<List<List<Result>>> list = new ArrayList<>();
-            for(List<Rule> rules : this.rules) {
-                List<List<Result>> subList = new ArrayList<>();
-                for(Rule rule : rules) {
-                    subList.add(rule.getRules());
+            List<String> otherWay = new ArrayList<>();
+            for (int i = 0; i < size; ++i) {
+                otherWay.add(ordered.get(0).get(i % ordered.get(0).size()));
+            }
+            for (int j = 1; j < ordered.size(); ++j) {
+                for (int i = 0; i < size; ++i) {
+                    otherWay.set(i, otherWay.get(i) + ordered.get(j).get(i % ordered.get(j).size()));
                 }
-                list.add(subList);
             }
-
-            return null;
+            return otherWay;
         }
     }
 
-    static class Result {
-        String str;
+    static class MultiRule {
+        List<Rule> rules;
 
-        public Result(String str) {
-            this.str = str;
+        public MultiRule(List<Rule> rules) {
+            this.rules = rules;
+        }
+
+        private List<String> getRules() {
+            List<String> rules = new ArrayList<>();
+            for (Rule rule : this.rules) {
+                rules.addAll(rule.getRules());
+            }
+            return rules;
+        }
+    }
+
+    static class Expression {
+        Character letter;
+        MultiRule rules;
+
+        public Expression(Character letter) {
+            this.letter = letter;
+        }
+
+        public Expression(MultiRule rules) {
+            this.rules = rules;
+        }
+
+        private List<String> getRules() {
+            if (letter != null) {
+                return new ArrayList<>(List.of(this.letter + ""));
+            }
+            return this.rules.getRules();
         }
     }
 }
