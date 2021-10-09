@@ -18,7 +18,7 @@ public class Problem19 extends Problem<Integer> {
         for (; i < this.input.size(); ++i) {
             if (this.input.get(i).isEmpty()) break;
             String[] split = input.get(i).split(":");
-            rules.put(split[0], new MultiRule(
+            rules.put(split[0], new MultiRule(split[0],
                     Arrays.stream(split[1].strip().split("\\|"))
                             .map(Rule::new)
                             .collect(Collectors.toList()))
@@ -29,24 +29,52 @@ public class Problem19 extends Problem<Integer> {
             this.toTest.add(this.input.get(i));
         }
         toTest.sort(String::compareTo);
+    }
+
+    @Override
+    public Integer rule1() {
+        return findSolution();
+    }
+
+    @Override
+    public Integer rule2() {
+        this.rules.put("8", new MultiRule("8", List.of(new Rule("42"), new Rule("42 800"))));
+        this.rules.put("11", new MultiRule("11", List.of(new Rule("42 31"), new Rule("42 1100 31"))));
+
+        int max = 0;
+        for (int i = 0; i <= max; ++i) {
+            String currentNum800 = String.format("8%02d", i);
+            String currentNum1100 = String.format("11%02d", i);
+            String nextNum800 = String.format("8%02d", i + 1);
+            String nextNum1100 = String.format("11%02d", i + 1);
+
+            if (i < max) {
+                this.rules.put(currentNum800, new MultiRule(currentNum800, List.of(new Rule("42"), new Rule("42 " + nextNum800))));
+                this.rules.put(currentNum1100, new MultiRule(currentNum1100, List.of(new Rule("42 31"), new Rule("42 " + nextNum1100 + " 31"))));
+            } else {
+                this.rules.put(currentNum800, new MultiRule(currentNum800, List.of(new Rule("42"))));
+                this.rules.put(currentNum1100, new MultiRule(currentNum1100, List.of(new Rule("42 31"))));
+            }
+        }
+        return findSolution();
+    }
+
+    private Integer findSolution() {
         for (MultiRule multiRule : rules.values()) {
             for (Rule rule : multiRule.rules) {
                 rule.findSubRules(this.rules);
             }
         }
-    }
+        int max = toTest.stream().map(String::length).max(Integer::compare).get();
 
-    @Override
-    public Integer rule1() {
-        Set<String> result = new TreeSet<>(this.rules.get("0").getRules());
-        List<String> matching = result.stream().filter(toTest::contains).collect(Collectors.toList());
-        matching.sort(String::compareTo);
+        List<String> result = this.rules.get("0").getRules();
+        result.sort(String::compareTo);
+
+        List<String> matching = toTest.stream()
+                //.filter(str -> str.length() == 24)
+                .filter(result::contains)
+                .collect(Collectors.toList());
         return matching.size();
-    }
-
-    @Override
-    public Integer rule2() {
-        return null;
     }
 
     static class Rule {
@@ -56,6 +84,7 @@ public class Problem19 extends Problem<Integer> {
 
         //post
         List<Expression> expressions;
+        List<String> resolved = null;
 
         public Rule(String rule) {
             String stripped = rule.strip();
@@ -80,6 +109,9 @@ public class Problem19 extends Problem<Integer> {
         }
 
         private List<String> getRules() {
+            if (resolved != null) {
+                return this.resolved;
+            }
             List<List<String>> ordered = new ArrayList<>();
             for (Expression expression : this.expressions) {
                 List<String> subs = expression.getRules();
@@ -91,20 +123,24 @@ public class Problem19 extends Problem<Integer> {
             for (int i = 0; i < size; ++i) {
                 otherWay.add(ordered.get(0).get(i % ordered.get(0).size()));
             }
+            otherWay.sort(String::compareTo);
             for (int j = 1; j < ordered.size(); ++j) {
                 for (int i = 0; i < size; ++i) {
                     otherWay.set(i, otherWay.get(i) + ordered.get(j).get(i % ordered.get(j).size()));
                 }
             }
+            this.resolved = otherWay;
             return otherWay;
         }
     }
 
     static class MultiRule {
         List<Rule> rules;
+        String number;
 
-        public MultiRule(List<Rule> rules) {
+        public MultiRule(String number, List<Rule> rules) {
             this.rules = rules;
+            this.number = number;
         }
 
         private List<String> getRules() {
@@ -129,6 +165,7 @@ public class Problem19 extends Problem<Integer> {
         }
 
         private List<String> getRules() {
+
             if (letter != null) {
                 return new ArrayList<>(List.of(this.letter + ""));
             }
