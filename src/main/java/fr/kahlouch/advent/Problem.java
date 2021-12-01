@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public abstract class Problem<RETURN_TYPE> {
+public abstract class Problem {
     protected List<String> input;
 
-    public Problem<RETURN_TYPE> init(String path) throws FileNotFoundException {
+    public Problem init(String path) throws FileNotFoundException {
         ClassLoader classLoader = getClass().getClassLoader();
         File testInput = new File(classLoader.getResource(path).getFile());
         Scanner sc = new Scanner(testInput);
@@ -24,7 +24,7 @@ public abstract class Problem<RETURN_TYPE> {
     public void setupData() {
     }
 
-    public abstract RETURN_TYPE rule1();
+    public abstract Object rule1();
 
-    public abstract RETURN_TYPE rule2();
+    public abstract Object rule2();
 }

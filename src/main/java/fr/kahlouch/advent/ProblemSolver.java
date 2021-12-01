@@ -6,7 +6,7 @@ public class ProblemSolver {
     private ProblemSolver() {
     }
 
-    public static <PROBLEM extends Problem<?>> void solve(String path, Class<PROBLEM> clazz) {
+    public static <PROBLEM extends Problem> void solve(String path, Class<PROBLEM> clazz) {
         try {
             final Constructor<PROBLEM> constructor = clazz.getConstructor();
             System.out.println("Solution 1: " + constructor.newInstance().init(path).rule1());
