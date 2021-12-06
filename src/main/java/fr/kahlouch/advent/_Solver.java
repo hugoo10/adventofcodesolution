@@ -31,7 +31,7 @@ public class _Solver {
     );
 
     public static void main(String[] args) {
-        int toSolve = 4;
+        int toSolve = 5;
         ProblemSolver.solve(String.format("problem%02d.txt", toSolve), problems.get(toSolve - 1));
     }
 
