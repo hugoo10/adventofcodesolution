@@ -5,13 +5,13 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class Problem14 extends Problem {
-    private Polymer initialPolymer;
+    private String formula;
     private Map<String, String> polymerTemplate = new TreeMap<>();
 
 
     @Override
     public void setupData() {
-        this.initialPolymer = new Polymer(this.input.get(0));
+        this.formula = this.input.get(0);
         for (var i = 2; i < input.size(); ++i) {
             var split = this.input.get(i).split("->");
             this.polymerTemplate.put(split[0].strip(), split[1].strip());
@@ -20,47 +20,39 @@ public class Problem14 extends Problem {
 
     @Override
     public Object rule1() {
-        var res = this.initialPolymer;
-        for (var i = 0; i < 10; ++i) {
-            res = res.step(this.polymerTemplate);
-        }
-        Map<String, Long> perLetter = new HashMap<>();
-        var formula = this.input.get(0);
-        res.count.forEach((key, value) -> {
-            var ll = key.charAt(0) + "";
-            var lr = key.charAt(1) + "";
-            perLetter.putIfAbsent(ll, 0L);
-            perLetter.putIfAbsent(lr, 0L);
-            perLetter.computeIfPresent(ll, (str, count) -> count + value / 2);
-            perLetter.computeIfPresent(lr, (str, count) -> count + value / 2);
-        });
-        var min = perLetter.values().stream().mapToLong(i -> i).min().getAsLong();
-        var max = perLetter.values().stream().mapToLong(i -> i).max().getAsLong();
-        return max - min;
+        return resolve(this.formula, 10);
     }
 
     @Override
     public Object rule2() {
-        var res = this.initialPolymer;
-        for (var i = 0; i < 40; ++i) {
+        return resolve(this.formula, 40);
+    }
+
+
+    private long resolve(String formula, int nbLoop) {
+        var res = new Polymer(formula);
+        for (var i = 0; i < nbLoop; ++i) {
             res = res.step(this.polymerTemplate);
         }
         Map<String, Long> perLetter = new HashMap<>();
-        var formula = this.input.get(0);
         res.count.forEach((key, value) -> {
             var ll = key.charAt(0) + "";
             var lr = key.charAt(1) + "";
             perLetter.putIfAbsent(ll, 0L);
             perLetter.putIfAbsent(lr, 0L);
-            perLetter.computeIfPresent(ll, (str, count) -> count + value / 2);
-            perLetter.computeIfPresent(lr, (str, count) -> count + value / 2);
+            perLetter.computeIfPresent(ll, (str, count) -> count + value);
+            perLetter.computeIfPresent(lr, (str, count) -> count + value);
         });
-
-
+        perLetter.replaceAll((str, count) -> count / 2);
+        var firstLetter = formula.charAt(0) + "";
+        var lastLetter = formula.charAt(formula.length() - 1) + "";
+        perLetter.compute(firstLetter, (str, count) -> count+1);
+        perLetter.compute(lastLetter, (str, count) -> count+1);
         var min = perLetter.values().stream().mapToLong(i -> i).min().getAsLong();
         var max = perLetter.values().stream().mapToLong(i -> i).max().getAsLong();
         return max - min;
     }
+
 
     static class Polymer {
         private Map<String, Long> count;
