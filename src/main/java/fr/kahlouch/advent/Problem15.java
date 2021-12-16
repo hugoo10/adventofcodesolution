@@ -19,7 +19,7 @@ public class Problem15 extends Problem {
     public Object rule1() {
         var depart = graph.getNodeAt(0, 0).get();
         var objectif = graph.getNodeAt(input.get(0).length() - 1, input.size() - 1).get();
-        shorterPath(depart, objectif);
+        var res = shorterPath(depart, objectif);
         return null;
     }
 
@@ -48,13 +48,43 @@ public class Problem15 extends Problem {
         }
     }
 
-    static class Node implements Comparable<Node> {
+    private Collection<Node> shorterPath(Node depart, Node objectif) {
+        final Queue<Node> closedList = new LinkedList<>();
+        final Queue<Node> openList = new PriorityQueue<>();
+        openList.add(depart.clone());
+
+        while (!openList.isEmpty()) {
+            Node u = openList.poll();//openList.derouler();
+            if (u.equals(objectif)) {
+                //reconstituer chemin
+                return openList;
+            }
+            for (var v : u.getVoisins(graph)) {
+                var existe_dans_openList_avec_cout_inferieur = openList.stream().anyMatch(node -> node.equals(v) && node.cout < v.cout);
+                if (!(closedList.contains(v) || existe_dans_openList_avec_cout_inferieur)) {
+                    var to_insert_in_open = v.clone();
+                    to_insert_in_open.cout = u.cout + 1;
+                    to_insert_in_open.heuristique = to_insert_in_open.cout + to_insert_in_open.distance(objectif);
+                    openList.offer(to_insert_in_open);
+                }
+            }
+            closedList.add(u.clone());
+        }
+        return null;
+    }
+
+    static class Node implements Comparable<Node>, Cloneable {
         private int x;
         private int y;
         private int cout;
         private int heuristique;
 
         public Node() {
+        }
+
+        @Override
+        public Node clone() {
+            return new Node(this.x, this.y, this.cout);
         }
 
         public Node(int x, int y, int cout) {
@@ -71,6 +101,10 @@ public class Problem15 extends Problem {
                     graph.getNodeAt(x, y - 1),
                     graph.getNodeAt(x, y + 1)
             ).filter(Optional::isPresent).map(Optional::get).toList();
+        }
+
+        int distance(Node node) {
+            return (int) Math.round(Math.sqrt(Math.pow(node.x - this.x, 2) + Math.pow(node.y - this.y, 2)));
         }
 
         @Override
@@ -97,24 +131,6 @@ public class Problem15 extends Problem {
         @Override
         public int hashCode() {
             return new HashCodeBuilder(17, 37).append(x).append(y).toHashCode();
-        }
-    }
-
-    private void shorterPath(Node depart, Node objectif) {
-        final List<Node> closedList = new ArrayList<>();
-        final Set<Node> openList = new TreeSet<>();
-        openList.add(depart);
-
-        while(!openList.isEmpty()) {
-            Node u = new Node();//openList.derouler();
-            if(u.equals(objectif)) {
-                //reconstituer chemin
-                break;
-            }
-            for(var v: u.getVoisins(graph)) {
-
-                if(closedList.contains(v) || openList.)
-            }
         }
     }
 }
