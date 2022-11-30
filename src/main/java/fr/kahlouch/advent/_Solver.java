@@ -1,5 +1,7 @@
 package fr.kahlouch.advent;
 
+import fr.kahlouch.advent.problems.*;
+
 import java.util.List;
 
 public class _Solver {

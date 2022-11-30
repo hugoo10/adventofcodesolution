@@ -1,18 +1,20 @@
 package fr.kahlouch.advent;
 
+import fr.kahlouch.advent.exception.GenericException;
+
 import java.lang.reflect.Constructor;
+import java.util.logging.Logger;
 
-public class ProblemSolver {
-    private ProblemSolver() {
-    }
+public interface ProblemSolver {
+    Logger log = Logger.getLogger("ProblemSolver");
 
-    public static <PROBLEM extends Problem> void solve(String path, Class<PROBLEM> clazz) {
+    static <P extends Problem> void solve(String path, Class<P> clazz) {
         try {
-            final Constructor<PROBLEM> constructor = clazz.getConstructor();
-            System.out.println("Solution 1: " + constructor.newInstance().init(path).rule1());
-            System.out.println("Solution 2: " + constructor.newInstance().init(path).rule2());
+            final Constructor<P> constructor = clazz.getConstructor();
+            log.info("Solution 1: " + constructor.newInstance().init(path).rule1());
+            log.info("Solution 2: " + constructor.newInstance().init(path).rule2());
         } catch (Exception e) {
-            throw new RuntimeException("Une erreur innatendue", e);
+            throw new GenericException("Une erreur innatendue", e);
         }
     }
 }

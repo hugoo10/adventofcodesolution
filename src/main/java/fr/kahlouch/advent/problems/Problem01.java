@@ -1,4 +1,6 @@
-package fr.kahlouch.advent;
+package fr.kahlouch.advent.problems;
+
+import fr.kahlouch.advent.Problem;
 
 public class Problem01 extends Problem {
     @Override
