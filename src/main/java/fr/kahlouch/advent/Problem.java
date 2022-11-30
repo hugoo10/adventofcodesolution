@@ -7,17 +7,18 @@ import java.util.List;
 import java.util.Scanner;
 
 public abstract class Problem {
-    protected List<String> input;
+    protected List<String> lines;
 
     public Problem init(String path) throws FileNotFoundException {
-        ClassLoader classLoader = getClass().getClassLoader();
-        File testInput = new File(classLoader.getResource(path).getFile());
-        Scanner sc = new Scanner(testInput);
-        this.input = new ArrayList<>();
-        while (sc.hasNextLine()) {
-            input.add(sc.nextLine());
+        final var classLoader = getClass().getClassLoader();
+        final var testInput = new File(classLoader.getResource(path).getFile());
+        try(final var sc = new Scanner(testInput)) {
+            this.lines = new ArrayList<>();
+            while (sc.hasNextLine()) {
+                lines.add(sc.nextLine());
+            }
+            setupData();
         }
-        setupData();
         return this;
     }
 
