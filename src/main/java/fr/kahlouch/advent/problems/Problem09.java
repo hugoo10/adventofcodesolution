@@ -31,20 +31,24 @@ public class Problem09 extends Problem {
             if (diffYAbs <= 1 && diffXAbs <= 1) {
                 newX = x;
                 newY = y;
-            } else if (diffYAbs > 1) {
-                newX = previousKnot.x;
-                if (diffY < 0) {
-                    newY = y - 1;
-                } else {
-                    newY = y + 1;
-                }
             } else {
-                if (diffX < 0) {
-                    newX = x - 1;
-                } else {
-                    newX = x + 1;
-                }
+                newX = previousKnot.x;
                 newY = previousKnot.y;
+                if (diffYAbs > 1) {
+
+                    if (diffY < 0) {
+                        newY = y - 1;
+                    } else {
+                        newY = y + 1;
+                    }
+                }
+                if (diffXAbs > 1) {
+                    if (diffX < 0) {
+                        newX = x - 1;
+                    } else {
+                        newX = x + 1;
+                    }
+                }
             }
             return new Knot(newX, newY);
         }
@@ -59,7 +63,8 @@ public class Problem09 extends Problem {
         }
     }
 
-    record LongRope(Knot head, Knot knot1, Knot knot2, Knot knot3, Knot knot4, Knot knot5, Knot knot6, Knot knot7, Knot knot8,
+    record LongRope(Knot head, Knot knot1, Knot knot2, Knot knot3, Knot knot4, Knot knot5, Knot knot6, Knot knot7,
+                    Knot knot8,
                     Knot tail) {
         LongRope applyMove(Move move) {
             var newHead = head.applyMove(move);
