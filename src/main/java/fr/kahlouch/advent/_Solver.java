@@ -33,7 +33,7 @@ public class _Solver {
     );
 
     public static void main(String[] args) {
-        int toSolve = 9;
+        int toSolve = 10;
         ProblemSolver.solve(String.format("problem%02d.txt", toSolve), problems.get(toSolve - 1));
     }
 
