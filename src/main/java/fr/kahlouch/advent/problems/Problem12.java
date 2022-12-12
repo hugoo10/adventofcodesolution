@@ -3,6 +3,7 @@ package fr.kahlouch.advent.problems;
 import fr.kahlouch.advent.Problem;
 
 public class Problem12 extends Problem {
+    record Node(int x, int y, char height){}
     @Override
     public void setupData() {
 
