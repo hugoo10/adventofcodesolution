@@ -2,10 +2,8 @@ package fr.kahlouch.advent.problems;
 
 import fr.kahlouch.advent.Problem;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Problem12 extends Problem {
     Graph graph;
@@ -17,8 +15,116 @@ public class Problem12 extends Problem {
     record Node(int id, int x, int y, char height, Type type) {
     }
 
-    record Graph(Map<Integer, Node> nodes, Map<Integer, List<Integer>> graph, Node start, Node end) {
 
+    static class RouteNode implements Comparable<RouteNode> {
+        Node current;
+        Node previous;
+        double routeScore;
+        double estimatedScore;
+
+        public RouteNode(Node current, Node previous, double routeScore, double estimatedScore) {
+            this.current = current;
+            this.previous = previous;
+            this.routeScore = routeScore;
+            this.estimatedScore = estimatedScore;
+        }
+
+        RouteNode(Node current) {
+            this(current, null, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
+        }
+        @Override
+        public int compareTo(RouteNode other) {
+            return Double.compare(this.estimatedScore, other.estimatedScore);
+        }
+
+        public Node getCurrent() {
+            return current;
+        }
+
+        public void setCurrent(Node current) {
+            this.current = current;
+        }
+
+        public Node getPrevious() {
+            return previous;
+        }
+
+        public void setPrevious(Node previous) {
+            this.previous = previous;
+        }
+
+        public double getRouteScore() {
+            return routeScore;
+        }
+
+        public void setRouteScore(double routeScore) {
+            this.routeScore = routeScore;
+        }
+
+        public double getEstimatedScore() {
+            return estimatedScore;
+        }
+
+        public void setEstimatedScore(double estimatedScore) {
+            this.estimatedScore = estimatedScore;
+        }
+    }
+
+    record RouteFinder(Graph graph, Scorer nextNodeScorer, Scorer targetScorer){
+        public List<Node> findRoute(Node from, Node to) {
+            Queue<RouteNode> openSet = new PriorityQueue<>();
+            Map<Node, RouteNode> allNodes = new HashMap<>();
+
+            RouteNode start = new RouteNode(from, null, 0d, targetScorer.computeCost(from, to));
+            openSet.add(start);
+            allNodes.put(from, start);
+
+            while (!openSet.isEmpty()) {
+                RouteNode next = openSet.poll();
+                //build route
+                if (next.getCurrent().equals(to)) {
+                    List<Node> route = new ArrayList<>();
+                    RouteNode current = next;
+                    do {
+                        route.add(0, current.getCurrent());
+                        current = allNodes.get(current.getPrevious());
+                    } while (current != null);
+                    return route;
+                }
+                graph.getConnections(next.getCurrent()).forEach(connection -> {
+                    RouteNode nextNode = allNodes.getOrDefault(connection, new RouteNode(connection));
+                    allNodes.put(connection, nextNode);
+
+                    double newScore = next.getRouteScore() + nextNodeScorer.computeCost(next.getCurrent(), connection);
+                    if (newScore < nextNode.getRouteScore()) {
+                        nextNode.setPrevious(next.getCurrent());
+                        nextNode.setRouteScore(newScore);
+                        nextNode.setEstimatedScore(newScore + targetScorer.computeCost(connection, to));
+                        openSet.add(nextNode);
+                    }
+                });
+            }
+            throw new IllegalStateException("No route found");
+        }
+    }
+
+    record Graph(Map<Integer, Node> nodes, Map<Integer, List<Integer>> graph, Node start, Node end) {
+        public Node getNode(int id) {
+            return nodes.get(id);
+        }
+
+        public Set<Node> getConnections(Node node) {
+            return graph.get(node.id).stream()
+                    .map(this::getNode)
+                    .collect(Collectors.toSet());
+        }
+
+    }
+
+    record Scorer() {
+        double computeCost(Node from, Node to){
+            return Math.sqrt(Math.pow(from.x + to.x,2) + Math.pow(from.y + to.y, 2));
+        }
     }
 
     @Override
@@ -65,7 +171,9 @@ public class Problem12 extends Problem {
 
     @Override
     public Object rule1() {
-        return null;
+        var routeFinder = new RouteFinder(graph, new Scorer(), new Scorer());
+        var res = routeFinder.findRoute(graph.start, graph.end);
+        return res.size() -1;
     }
 
     @Override
