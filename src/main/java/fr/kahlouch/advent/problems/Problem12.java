@@ -32,6 +32,7 @@ public class Problem12 extends Problem {
         RouteNode(Node current) {
             this(current, null, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
         }
+
         @Override
         public int compareTo(RouteNode other) {
             return Double.compare(this.estimatedScore, other.estimatedScore);
@@ -70,7 +71,7 @@ public class Problem12 extends Problem {
         }
     }
 
-    record RouteFinder(Graph graph, Scorer nextNodeScorer, Scorer targetScorer){
+    record RouteFinder(Graph graph, Scorer nextNodeScorer, Scorer targetScorer) {
         public List<Node> findRoute(Node from, Node to) {
             Queue<RouteNode> openSet = new PriorityQueue<>();
             Map<Node, RouteNode> allNodes = new HashMap<>();
@@ -122,8 +123,8 @@ public class Problem12 extends Problem {
     }
 
     record Scorer() {
-        double computeCost(Node from, Node to){
-            return Math.sqrt(Math.pow(from.x + to.x,2) + Math.pow(from.y + to.y, 2));
+        double computeCost(Node from, Node to) {
+            return Math.sqrt(Math.pow(from.x + to.x, 2) + Math.pow(from.y + to.y, 2));
         }
     }
 
@@ -154,12 +155,12 @@ public class Problem12 extends Problem {
                 final var node = nodes[x][y];
                 graph.put(node.id, new ArrayList<>());
                 for (var xd = -1; xd <= 1; xd += 2) {
-                    if (x + xd >= 0 && x + xd < nodes.length && Math.abs(nodes[x + xd][y].height - node.height) <= 1) {
+                    if (x + xd >= 0 && x + xd < nodes.length && nodes[x + xd][y].height - node.height <= 1) {
                         graph.get(node.id).add(nodes[x + xd][y].id);
                     }
                 }
                 for (var yd = -1; yd <= 1; yd += 2) {
-                    if (y + yd >= 0 && y + yd < nodes[x].length && Math.abs(nodes[x][y + yd].height - node.height) <= 1) {
+                    if (y + yd >= 0 && y + yd < nodes[x].length && nodes[x][y + yd].height - node.height <= 1) {
                         graph.get(node.id).add(nodes[x][y + yd].id);
                     }
                 }
@@ -173,11 +174,42 @@ public class Problem12 extends Problem {
     public Object rule1() {
         var routeFinder = new RouteFinder(graph, new Scorer(), new Scorer());
         var res = routeFinder.findRoute(graph.start, graph.end);
-        return res.size() -1;
+        return res.size() - 1;
     }
 
+    /*
+    --- Part Two ---
+    As you walk up the hill, you suspect that the Elves will want to turn this into a hiking trail. The beginning isn't very scenic, though; perhaps you can find a better starting point.
+
+    To maximize exercise while hiking, the trail should start as low as possible: elevation a. The goal is still the square marked E. However, the trail should still be direct, taking the fewest steps to reach its goal. So, you'll need to find the shortest path from any square at elevation a to the square marked E.
+
+    Again consider the example from above:
+
+    Sabqponm
+    abcryxxl
+    accszExk
+    acctuvwj
+    abdefghi
+    Now, there are six choices for starting position (five marked a, plus the square marked S that counts as being at elevation a). If you start at the bottom-left square, you can reach the goal most quickly:
+
+    ...v<<<<
+    ...vv<<^
+    ...v>E^^
+    .>v>>>^^
+    >^>>>>>^
+    This path reaches the goal in only 29 steps, the fewest possible.
+
+    What is the fewest steps required to move starting from any square with elevation a to the location that should get the best signal?
+     */
     @Override
     public Object rule2() {
-        return null;
+        var routeFinder = new RouteFinder(graph, new Scorer(), new Scorer());
+        var res = routeFinder.findRoute(graph.start, graph.end);
+        for (var i = res.size() - 1; i >= 0; --i) {
+            if(res.get(i).height == 'a') {
+                return res.size() - i - 1;
+            }
+        }
+        return  -1;
     }
 }
