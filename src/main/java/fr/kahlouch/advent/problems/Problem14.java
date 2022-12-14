@@ -2,10 +2,83 @@ package fr.kahlouch.advent.problems;
 
 import fr.kahlouch.advent.Problem;
 
+import java.awt.*;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
+
 public class Problem14 extends Problem {
+    Map<Integer, TreeSet<Integer>> still = new TreeMap<>();
+    int infiniteLine;
+
+    Point dropSand(Point start, boolean checkInfinite) {
+        var position = start;
+        var tmpPosition = position;
+        do {
+            position = tmpPosition;
+            tmpPosition = fell(position, checkInfinite);
+        } while (tmpPosition != null && !tmpPosition.equals(position));
+        still.putIfAbsent(position.x, new TreeSet<>());
+        still.get(position.x).add(position.y);
+        return tmpPosition;
+    }
+
+    Point fell(Point position, boolean checkInfinite) {
+        if (!isHardAt(position.x, position.y + 1, checkInfinite)) {
+            var firstHard = firstHardUnder(position, checkInfinite);
+            if (firstHard == null) return null;
+            return new Point(position.x, firstHard.y - 1);
+        }
+        if (!isHardAt(position.x - 1, position.y + 1, checkInfinite)) return new Point(position.x - 1, position.y + 1);
+        if (!isHardAt(position.x + 1, position.y + 1, checkInfinite)) return new Point(position.x + 1, position.y + 1);
+        return position;
+    }
+
+    Point firstHardUnder(Point point, boolean checkInfinite) {
+        if (!still.containsKey(point.x)){
+            if(checkInfinite) {
+                return new Point(point.x, infiniteLine);
+            }
+            return null;
+        }
+        return still.get(point.x)
+                .stream()
+                .filter(y -> y > point.y)
+                .findFirst()
+                .map(y -> new Point(point.x, y))
+                .orElseGet(() -> {
+                    if(checkInfinite) {
+                        return new Point(point.x, infiniteLine);
+                    }
+                    return null;
+                });
+    }
+
+    boolean isHardAt(int x, int y, boolean checkInfinite) {
+        return (checkInfinite && this.infiniteLine == y) || (still.containsKey(x) && still.get(x).contains(y));
+    }
+
     @Override
     public void setupData() {
-
+        for (var line : lines) {
+            var split = line.split(" -> ");
+            for (var i = 0; i < split.length - 1; ++i) {
+                var from = split[i].split(",");
+                var fromX = Integer.parseInt(from[0]);
+                var fromY = Integer.parseInt(from[1]);
+                var to = split[i + 1].split(",");
+                var toX = Integer.parseInt(to[0]);
+                var toY = Integer.parseInt(to[1]);
+                for (int x = Math.min(fromX, toX); x <= Math.max(fromX, toX); ++x) {
+                    for (int y = Math.min(fromY, toY); y <= Math.max(fromY, toY); ++y) {
+                        still.putIfAbsent(x, new TreeSet<>());
+                        still.get(x).add(y);
+                    }
+                }
+            }
+        }
+        this.infiniteLine = still.values().stream().flatMap(Set::stream).mapToInt(i -> i).max().getAsInt() + 2;
     }
 
     /*
@@ -125,11 +198,25 @@ public class Problem14 extends Problem {
      */
     @Override
     public Object rule1() {
-        return null;
+        Point start = new Point(500, 0);
+        Point end;
+        int turn = 0;
+        do {
+            turn++;
+            end = dropSand(start, false);
+        } while (end != null);
+        return turn - 1;
     }
 
     @Override
     public Object rule2() {
-        return null;
+        Point start = new Point(500, 0);
+        Point end;
+        int turn = 0;
+        do {
+            turn++;
+            end = dropSand(start, true);
+        } while (!end.equals(start));
+        return turn;
     }
 }
