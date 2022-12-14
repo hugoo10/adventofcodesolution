@@ -2,10 +2,110 @@ package fr.kahlouch.advent.problems;
 
 import fr.kahlouch.advent.Problem;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeSet;
+import java.util.stream.Stream;
+
 public class Problem13 extends Problem {
+    List<Pair> pairs = new ArrayList<>();
+
+    interface Value extends Comparable<Value> {
+
+
+        static int getClosingBracketIdx(String str, int startIdx) {
+            int count = 0;
+            for (var i = startIdx; i < str.length(); ++i) {
+                if (str.charAt(i) == '[') {
+                    ++count;
+                } else if (str.charAt(i) == ']') {
+                    --count;
+                }
+                if (count == 0) return i;
+            }
+            return -1;
+        }
+    }
+
+    record Pair(ArrayValue left, ArrayValue right) {
+        boolean isRightOrder() {
+            return left.compareTo(right) < 0;
+        }
+    }
+
+    record ArrayValue(List<Value> values) implements Value {
+        @Override
+        public int compareTo(Value right) {
+            if (right instanceof SimpleValue rightSimpleValue) {
+                return this.compareTo(rightSimpleValue.toArrayValue());
+            } else if (right instanceof ArrayValue rightArrayValue) {
+                int maxSize = Math.max(this.values.size(), rightArrayValue.values.size());
+                for (var i = 0; i < maxSize; ++i) {
+                    if (this.values.size() <= i) return -1;
+                    if (rightArrayValue.values.size() <= i) return 1;
+                    var compare = this.values.get(i).compareTo(rightArrayValue.values.get(i));
+                    if (compare != 0) return compare;
+                }
+                return 0;
+            }
+            throw new RuntimeException();
+        }
+
+        static ArrayValue parse(String str) {
+            var arrayValue = new ArrayValue(new ArrayList<>());
+            for (var i = 0; i < str.length(); ++i) {
+                Value value;
+                if (str.charAt(i) == '[') {
+                    var endIdx = Value.getClosingBracketIdx(str, i);
+                    if (endIdx == i + 1) {
+                        value = new ArrayValue(new ArrayList<>());
+                    } else {
+                        value = ArrayValue.parse(str.substring(i + 1, endIdx));
+                    }
+                    i = endIdx + 1;
+                } else {
+                    var nextCommaIdx = str.indexOf(',', i);
+                    if (nextCommaIdx == -1) {
+                        value = new SimpleValue(Integer.parseInt(str.substring(i)));
+                    } else {
+                        try {
+                            value = new SimpleValue(Integer.parseInt(str.substring(i, nextCommaIdx)));
+                        } catch (Exception e) {
+                            value = null;
+                        }
+                        i = nextCommaIdx;
+                    }
+                }
+                arrayValue.values.add(value);
+            }
+            return arrayValue;
+        }
+    }
+
+    record SimpleValue(int value) implements Value {
+        ArrayValue toArrayValue() {
+            return new ArrayValue(List.of(this));
+        }
+
+        @Override
+        public int compareTo(Value right) {
+            if (right instanceof SimpleValue rightSimpleValue) {
+                return Integer.compare(this.value, rightSimpleValue.value);
+            } else if (right instanceof ArrayValue rightArrayValue) {
+                return this.toArrayValue().compareTo(rightArrayValue);
+            }
+            throw new RuntimeException();
+        }
+    }
+
     @Override
     public void setupData() {
-
+        for (var i = 0; i < lines.size(); i += 3) {
+            pairs.add(new Pair(
+                    ArrayValue.parse(lines.get(i)),
+                    ArrayValue.parse(lines.get(i + 1))
+            ));
+        }
     }
 
     /*
@@ -120,11 +220,57 @@ public class Problem13 extends Problem {
      */
     @Override
     public Object rule1() {
-        return null;
+        var sum =0;
+        for(var i = 0; i<pairs.size();++i) {
+            if(pairs.get(i).isRightOrder()){
+                sum += i + 1;
+            }
+        }
+        return sum;
     }
 
+    /*
+    --- Part Two ---
+    Now, you just need to put all of the packets in the right order. Disregard the blank lines in your list of received packets.
+
+    The distress signal protocol also requires that you include two additional divider packets:
+
+    [[2]]
+    [[6]]
+    Using the same rules as before, organize all packets - the ones in your list of received packets as well as the two divider packets - into the correct order.
+
+    For the example above, the result of putting the packets in the correct order is:
+
+    []
+    [[]]
+    [[[]]]
+    [1,1,3,1,1]
+    [1,1,5,1,1]
+    [[1],[2,3,4]]
+    [1,[2,[3,[4,[5,6,0]]]],8,9]
+    [1,[2,[3,[4,[5,6,7]]]],8,9]
+    [[1],4]
+    [[2]]
+    [3]
+    [[4,4],4,4]
+    [[4,4],4,4,4]
+    [[6]]
+    [7,7,7]
+    [7,7,7,7]
+    [[8,7,6]]
+    [9]
+    Afterward, locate the divider packets. To find the decoder key for this distress signal, you need to determine the indices of the two divider packets and multiply them together. (The first packet is at index 1, the second packet is at index 2, and so on.) In this example, the divider packets are 10th and 14th, and so the decoder key is 140.
+
+    Organize all of the packets into the correct order. What is the decoder key for the distress signal?
+     */
     @Override
     public Object rule2() {
-        return null;
+        var set = new TreeSet<>(pairs.stream().flatMap(pair -> Stream.of(pair.left, pair.right)).toList());
+        var packet1 = ArrayValue.parse("[[2]]");
+        var packet2 = ArrayValue.parse("[[6]]");
+        set.add(packet1);
+        set.add(packet2);
+        var a = new ArrayList<>(set);
+        return (a.indexOf(packet1) + 1) * (a.indexOf(packet2) + 1);
     }
 }
