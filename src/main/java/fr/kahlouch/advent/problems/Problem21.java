@@ -1,11 +1,11 @@
 package fr.kahlouch.advent.problems;
 
 import fr.kahlouch.advent.Problem;
-import fr.kahlouch.advent.ProblemSolver;
+
 
 public class Problem21 extends Problem {
     public static void main(String[] args) {
-        ProblemSolver.solve(Problem21.class);
+        Problem.solve(Problem21.class);
     }
 
     @Override
