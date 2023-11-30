@@ -2,33 +2,23 @@ package fr.kahlouch.advent;
 
 import fr.kahlouch.advent.exception.GenericException;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.net.URL;
-import java.util.ArrayList;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
 
 public abstract class Problem {
+    private final static Path RESOURCES_FOLDER = Path.of("").toAbsolutePath().resolve(Path.of("src", "main", "resources"));
     protected List<String> lines;
 
-    public Problem init(String path) {
-        final var classLoader = getClass().getClassLoader();
-        Optional.ofNullable(classLoader.getResource(path))
-                .map(URL::getFile)
-                .map(File::new)
-                .ifPresent(testInput -> {
-                    try (final var sc = new Scanner(testInput)) {
-                        this.lines = new ArrayList<>();
-                        while (sc.hasNextLine()) {
-                            lines.add(sc.nextLine());
-                        }
-                        setupData();
-                    } catch (FileNotFoundException fnfe) {
-                        throw new GenericException("Erreur en lisant fichier input", fnfe);
-                    }
-                });
+    public Problem init(String fileName) {
+        final var testInput = RESOURCES_FOLDER.resolve(fileName);
+        try (final var linesStream = Files.lines(testInput)) {
+            this.lines = linesStream.toList();
+        } catch (IOException ioe) {
+            throw new GenericException("Erreur en lisant fichier input", ioe);
+        }
+        setupData();
         return this;
     }
 

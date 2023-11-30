@@ -1,8 +1,12 @@
 package fr.kahlouch.advent.problems;
 
 import fr.kahlouch.advent.Problem;
+import fr.kahlouch.advent.ProblemSolver;
 
 public class Problem22 extends Problem {
+public static void main(String[] args) {
+        ProblemSolver.solve(Problem22.class);
+    }
     @Override
     public void setupData() {
 
