@@ -41,8 +41,7 @@ public abstract class Problem {
         return this;
     }
 
-    public void setupData() {
-    }
+    public abstract void setupData();
 
     public abstract Object rule1();
 
