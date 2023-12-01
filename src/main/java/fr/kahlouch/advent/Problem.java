@@ -16,13 +16,13 @@ public abstract class Problem {
 
     public static <P extends Problem> void solve(Class<P> clazz) {
         try {
-            final var testFile = clazz.getSimpleName().toLowerCase() + "_test.txt";
-            final var realFile = clazz.getSimpleName().toLowerCase() + ".txt";
+            final var testFile = clazz.getSimpleName().toLowerCase() + "_part%s_test.txt";
+            final var realFile = clazz.getSimpleName().toLowerCase() + "_part%s.txt";
             final Constructor<P> constructor = clazz.getConstructor();
-            log.info("Solution TEST 1: " + constructor.newInstance().init(testFile).rule1());
-            log.info("Solution TEST 2: " + constructor.newInstance().init(testFile).rule2());
-            log.info("Solution 1: " + constructor.newInstance().init(realFile).rule1());
-            log.info("Solution 2: " + constructor.newInstance().init(realFile).rule2());
+            log.info("Solution TEST 1: " + constructor.newInstance().init(testFile.formatted("1")).rule1());
+            log.info("Solution TEST 2: " + constructor.newInstance().init(testFile.formatted("2")).rule2());
+            log.info("Solution 1: " + constructor.newInstance().init(realFile.formatted("1")).rule1());
+            log.info("Solution 2: " + constructor.newInstance().init(realFile.formatted("2")).rule2());
         } catch (Exception e) {
             throw new GenericException("Une erreur innatendue", e);
         }
