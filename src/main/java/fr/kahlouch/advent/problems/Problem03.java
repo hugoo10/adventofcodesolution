@@ -67,7 +67,6 @@ public class Problem03 extends Problem {
 
     @Override
     public Object rule2() {
-        long sum = 0;
         return this.symbols.stream().filter(Symbol::isPossibleGear).map(symbol -> {
                     final var partNumbers = new HashSet<Number>();
                     for (var y = symbol.y - 1; y <= symbol.y + 1; ++y) {
