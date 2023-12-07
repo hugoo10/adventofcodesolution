@@ -7,10 +7,23 @@ import java.lang.reflect.Constructor;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 public abstract class Problem {
-    private static final Logger log = Logger.getLogger("ProblemSolver");
+    private static final Logger log;
+
+    static {
+        final var stream = Problem.class.getClassLoader().
+                getResourceAsStream("logging.properties");
+        try {
+            LogManager.getLogManager().readConfiguration(stream);
+            log = Logger.getLogger("ProblemSolver");
+        } catch (IOException e) {
+            throw new RuntimeException("exception à l'initialisation du logger", e);
+        }
+    }
+
     private static final Path RESOURCES_FOLDER = Path.of("").toAbsolutePath().resolve(Path.of("src", "main", "resources"));
 
 
