@@ -5,9 +5,9 @@ import fr.kahlouch.advent.Problem;
 import java.util.*;
 
 
-public class Problem07_part1 extends Problem {
+public class Problem07Part1 extends Problem {
     public static void main(String[] args) {
-        Problem.solvePart1(Problem07_part1.class, 7);
+        Problem.solvePart1(Problem07Part1.class, 7);
     }
 
     private List<Hand> hands;
