@@ -69,9 +69,13 @@ public abstract class Problem {
 
     public abstract void setupData();
 
-    public abstract Object rule1();
+    public Object rule1() {
+        throw new UnsupportedOperationException();
+    }
 
-    public abstract Object rule2();
+    public Object rule2() {
+        throw new UnsupportedOperationException();
+    }
 
 
 }
