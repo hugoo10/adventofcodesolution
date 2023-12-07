@@ -14,15 +14,41 @@ public abstract class Problem {
     private static final Path RESOURCES_FOLDER = Path.of("").toAbsolutePath().resolve(Path.of("src", "main", "resources"));
 
 
-    public static <P extends Problem> void solve(Class<P> clazz) {
+    public static <P extends Problem> void solve(Class<P> problemClass) {
+        final var className = problemClass.getSimpleName();
+        final var dayStr = className.substring(className.length() - 2);
+        final var day = Integer.parseInt(dayStr);
+        solve(problemClass, day, 1);
+        solve(problemClass, day, 2);
+    }
+
+    public static <P extends Problem> void solvePart1(Class<P> problemClass, int day) {
+        solve(problemClass, day, 1);
+    }
+
+    public static <P extends Problem> void solvePart2(Class<P> problemClass, int day) {
+        solve(problemClass, day, 2);
+    }
+
+    public static <P extends Problem> void solve(Class<P> problemClass, int day, int part) {
+        if (day < 1 || day > 24) {
+            throw new IllegalArgumentException("Le jour doit être en 1 et 24");
+        }
+        if (part != 1 && part != 2) {
+            throw new IllegalArgumentException("La partie d'exercice ne peut être que 1 ou 2");
+        }
         try {
-            final var testFile = clazz.getSimpleName().toLowerCase() + "_test.txt";
-            final var realFile = clazz.getSimpleName().toLowerCase() + ".txt";
-            final Constructor<P> constructor = clazz.getConstructor();
-            log.info("Solution TEST 1: " + constructor.newInstance().init(testFile).rule1());
-            log.info("Solution TEST 2: " + constructor.newInstance().init(testFile).rule2());
-            log.info("Solution 1: " + constructor.newInstance().init(realFile).rule1());
-            log.info("Solution 2: " + constructor.newInstance().init(realFile).rule2());
+            final var problem = "problem%02d".formatted(day);
+            final var testFile = problem + "_part%s_test.txt".formatted(part);
+            final var realFile = problem + "_part%s.txt".formatted(part);
+            final Constructor<P> constructor = problemClass.getConstructor();
+            if (part == 1) {
+                log.info("Solution TEST 1: " + constructor.newInstance().init(testFile.formatted("1")).rule1());
+                log.info("Solution 1: " + constructor.newInstance().init(realFile.formatted("1")).rule1());
+            } else {
+                log.info("Solution TEST 2: " + constructor.newInstance().init(testFile.formatted("2")).rule2());
+                log.info("Solution 2: " + constructor.newInstance().init(realFile.formatted("2")).rule2());
+            }
         } catch (Exception e) {
             throw new GenericException("Une erreur innatendue", e);
         }
