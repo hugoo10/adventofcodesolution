@@ -76,9 +76,13 @@ public abstract class Problem {
         } catch (IOException ioe) {
             throw new GenericException("Erreur en lisant fichier input", ioe);
         }
+        if (this.lines == null || this.lines.isEmpty()) {
+            return new NoInputProblem();
+        }
         setupData();
         return this;
     }
+
 
     public abstract void setupData();
 
@@ -88,6 +92,25 @@ public abstract class Problem {
 
     public Object rule2() {
         throw new UnsupportedOperationException();
+    }
+
+    private static class NoInputProblem extends Problem {
+        private static String NO_INPUT = "NO INPUT";
+
+        @Override
+        public void setupData() {
+
+        }
+
+        @Override
+        public Object rule1() {
+            return NO_INPUT;
+        }
+
+        @Override
+        public Object rule2() {
+            return NO_INPUT;
+        }
     }
 
 
