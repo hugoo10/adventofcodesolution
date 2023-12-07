@@ -56,11 +56,11 @@ public abstract class Problem {
             final var realFile = problem + "_part%s.txt".formatted(part);
             final Constructor<P> constructor = problemClass.getConstructor();
             if (part == 1) {
-                log.info("Solution TEST 1: " + constructor.newInstance().init(testFile.formatted("1")).rule1());
-                log.info("Solution 1: " + constructor.newInstance().init(realFile.formatted("1")).rule1());
+                log.info("[TEST] Solution 1:     " + constructor.newInstance().init(testFile.formatted("1")).rule1());
+                log.info("       Solution 1:     " + constructor.newInstance().init(realFile.formatted("1")).rule1());
             } else {
-                log.info("Solution TEST 2: " + constructor.newInstance().init(testFile.formatted("2")).rule2());
-                log.info("Solution 2: " + constructor.newInstance().init(realFile.formatted("2")).rule2());
+                log.info("[TEST] Solution 2:     " + constructor.newInstance().init(testFile.formatted("2")).rule2());
+                log.info("       Solution 2:     " + constructor.newInstance().init(realFile.formatted("2")).rule2());
             }
         } catch (Exception e) {
             throw new GenericException("Une erreur innatendue", e);
