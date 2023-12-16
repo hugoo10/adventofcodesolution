@@ -10,7 +10,7 @@ import fr.kahlouch.coding._common.input.parse.Parser;
 import java.nio.file.Path;
 import java.util.HashSet;
 
-public class Day3 extends Problem {
+class Day3 extends Problem {
     public Day3() {
         super(4);
     }
