@@ -1,12 +1,14 @@
-package fr.kahlouch.advent.year.year_2015;
+package fr.kahlouch.coding.advent_2015;
 
-import fr.kahlouch.advent.common.Day;
+import fr.kahlouch.coding._common.Problem;
+import fr.kahlouch.coding._common.Responses;
+import fr.kahlouch.coding._common.input.Input;
+import fr.kahlouch.coding._common.input.parse.Parser;
 
 import java.nio.file.Path;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-class Day1 extends Day {
+class Day1 extends Problem {
     public Day1() {
         super(11);
     }
@@ -17,7 +19,7 @@ class Day1 extends Day {
 
     @Override
     protected Object resolve(Path inputPath) {
-        return List.of(
+        return Responses.of(
                 resolve1(inputPath),
                 resolve2(inputPath)
         );
@@ -25,41 +27,39 @@ class Day1 extends Day {
 
     private Object resolve1(Path inputPath) {
         final var floor = new AtomicInteger(0);
-        charStream(inputPath)
-                .map(Direction::parse)
+        Input.of(inputPath).line()
+                .chars(DirectionParser.INSTANCE)
                 .forEach(direction -> direction.accept(floor));
         return floor;
     }
 
     private Object resolve2(Path inputPath) {
         final var floor = new AtomicInteger(0);
-        final var position = new AtomicInteger(1);
-        return charStream(inputPath)
-                .map(Direction::parse)
+        return Input.of(inputPath).line()
+                .chars(DirectionParser.INSTANCE)
                 .filter(direction -> {
                     direction.accept(floor);
-                    if(floor.get() < 0){
-                        return true;
-                    }
-                    position.incrementAndGet();
-                    return false;
+                    return floor.get() < 0;
                 }).findFirst()
-                .map(t -> position.get())
-                .orElse(-1);
+                .map(direction -> direction.idx + 1)
+                .orElse(-1L);
     }
 
-    private enum Direction {
-        UP, DOWN;
+    enum DirectionParser implements Parser<Direction> {
+        INSTANCE;
 
-        static Direction parse(Character character) {
-            if (character == '(') {
-                return UP;
+        @Override
+        public Direction parse(String input, long index) {
+            if (input.equals("(")) {
+                return new Direction(index, true);
             }
-            return DOWN;
+            return new Direction(index, false);
         }
+    }
 
+    record Direction(long idx, boolean up) {
         void accept(AtomicInteger floor) {
-            if (this == UP) {
+            if (this.up) {
                 floor.incrementAndGet();
             } else {
                 floor.decrementAndGet();

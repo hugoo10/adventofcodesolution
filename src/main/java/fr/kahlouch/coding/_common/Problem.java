@@ -1,4 +1,4 @@
-package fr.kahlouch.advent.common;
+package fr.kahlouch.coding._common;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -8,11 +8,11 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
-public abstract class Day {
+public abstract class Problem {
     private static final Logger log;
 
     static {
-        final var stream = Day.class.getClassLoader().
+        final var stream = Problem.class.getClassLoader().
                 getResourceAsStream("logging.properties");
         try {
             LogManager.getLogManager().readConfiguration(stream);
@@ -28,11 +28,11 @@ public abstract class Day {
     private Path testFolder;
     private Path inputFile;
 
-    protected Day() {
+    protected Problem() {
         this(1);
     }
 
-    protected Day(int nbTests) {
+    protected Problem(int nbTests) {
         final var packageName = this.getClass().getPackageName();
         this.year = Arrays.stream(packageName.split("\\.")).toList().getLast();
         this.day = this.getClass().getSimpleName().toLowerCase();
@@ -100,21 +100,4 @@ public abstract class Day {
     }
 
     protected abstract Object resolve(Path inputPath);
-
-    protected Stream<String> lineStream(Path inputPath) {
-        try {
-            return Files.lines(inputPath);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    protected Stream<Character> charStream(Path inputPath) {
-        return lineStream(inputPath)
-                .flatMap(line -> line.chars()
-                        .mapToObj(i -> (char) i)
-                );
-    }
-
-
 }
