@@ -28,15 +28,19 @@ public abstract class Day {
     private Path testFolder;
     private Path inputFile;
 
-    public Day() {
+    protected Day() {
+        this(1);
+    }
+
+    protected Day(int nbTests) {
         final var packageName = this.getClass().getPackageName();
         this.year = Arrays.stream(packageName.split("\\.")).toList().getLast();
         this.day = this.getClass().getSimpleName().toLowerCase();
-        createInputFilesIfNotPresent();
+        createInputFilesIfNotPresent(nbTests);
         resolveAll();
     }
 
-    private void createInputFilesIfNotPresent() {
+    private void createInputFilesIfNotPresent(int nbTests) {
         try {
             final var yearFolder = RESOURCES_FOLDER.resolve(this.year);
             if (Files.notExists(yearFolder)) {
@@ -54,10 +58,18 @@ public abstract class Day {
             if (Files.notExists(inputFile)) {
                 Files.createFile(inputFile);
             }
-            final var testFile = testFolder.resolve("test1.txt");
-            if (Files.notExists(testFile)) {
-                Files.createFile(testFile);
-            }
+            Stream.iterate(0, i -> i < nbTests, i -> i + 1)
+                    .map("%02d"::formatted)
+                    .forEach(index -> {
+                        final var testFile = testFolder.resolve("test" + index + ".txt");
+                        if (Files.notExists(testFile)) {
+                            try {
+                                Files.createFile(testFile);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    });
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
