@@ -41,7 +41,7 @@ class Day2 extends Problem {
                 .sum();
     }
 
-    enum BoxParser implements Parser<Box> {
+    private enum BoxParser implements Parser<Box> {
         INSTANCE;
 
         private static final Pattern BOX_DIMENSION_PATTERN = Pattern.compile("^(\\d+)x(\\d+)x(\\d+)$");
@@ -59,7 +59,7 @@ class Day2 extends Problem {
         }
     }
 
-    record Box(int length, int width, int height) {
+    private record Box(int length, int width, int height) {
         long computeWrappingArea() {
             final var smallest = IntStream.of(length, width, height).sorted().limit(2).reduce((a, b) -> a * b).getAsInt();
             return (2L * length * width) + (2L * width * height) + (2L * height * length) + smallest;

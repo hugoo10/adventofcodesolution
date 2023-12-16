@@ -45,7 +45,7 @@ class Day1 extends Problem {
                 .orElse(-1L);
     }
 
-    enum DirectionParser implements Parser<Direction> {
+    private enum DirectionParser implements Parser<Direction> {
         INSTANCE;
 
         @Override
@@ -57,7 +57,7 @@ class Day1 extends Problem {
         }
     }
 
-    record Direction(long idx, boolean up) {
+    private record Direction(long idx, boolean up) {
         void accept(AtomicInteger floor) {
             if (this.up) {
                 floor.incrementAndGet();
