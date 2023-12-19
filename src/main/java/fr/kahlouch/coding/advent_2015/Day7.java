@@ -14,7 +14,7 @@ import java.util.function.BiFunction;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class Day7 extends AdventProblem {
+class Day7 extends AdventProblem {
     public static void main(String[] args) {
         new Day7();
     }
