@@ -28,10 +28,6 @@ public abstract class Problem {
     private Path testFolder;
     private Path inputFile;
 
-    protected Problem() {
-        this(1);
-    }
-
     protected Problem(int nbTests) {
         final var packageName = this.getClass().getPackageName();
         this.year = Arrays.stream(packageName.split("\\.")).toList().getLast();

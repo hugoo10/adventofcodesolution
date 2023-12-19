@@ -9,7 +9,7 @@ import java.nio.file.Path;
 import java.util.concurrent.atomic.AtomicInteger;
 
 class Day1 extends Problem {
-    public Day1() {
+    private Day1() {
         super(11);
     }
 

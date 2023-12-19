@@ -13,7 +13,7 @@ class Day4 extends Problem {
         new Day4();
     }
 
-    public Day4() {
+    private Day4() {
         super(2);
     }
 

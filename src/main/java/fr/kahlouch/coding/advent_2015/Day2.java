@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
 class Day2 extends Problem {
-    public Day2() {
+    private Day2() {
         super(2);
     }
 

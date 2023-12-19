@@ -11,7 +11,7 @@ import java.nio.file.Path;
 import java.util.HashSet;
 
 class Day3 extends Problem {
-    public Day3() {
+    private Day3() {
         super(4);
     }
 
