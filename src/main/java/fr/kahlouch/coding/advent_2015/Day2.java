@@ -1,15 +1,14 @@
 package fr.kahlouch.coding.advent_2015;
 
-import fr.kahlouch.coding._common.Problem;
-import fr.kahlouch.coding._common.Responses;
 import fr.kahlouch.coding._common.input.Input;
 import fr.kahlouch.coding._common.input.parse.Parser;
+import fr.kahlouch.coding._common.problem.AdventProblem;
 
 import java.nio.file.Path;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
-class Day2 extends Problem {
+class Day2 extends AdventProblem {
     private Day2() {
         super(2);
     }
@@ -18,22 +17,14 @@ class Day2 extends Problem {
         new Day2();
     }
 
-    @Override
-    protected Object resolve(Path inputPath) {
-        return Responses.of(
-                resolve1(inputPath),
-                resolve2(inputPath)
-        );
-    }
-
-    private Object resolve1(Path inputPath) {
+    protected Object resolve1(Path inputPath) {
         return Input.of(inputPath)
                 .multiLines()
                 .lines(BoxParser.INSTANCE)
                 .mapToLong(Box::computeWrappingArea)
                 .sum();
     }
-    private Object resolve2(Path inputPath) {
+    protected Object resolve2(Path inputPath) {
         return Input.of(inputPath)
                 .multiLines()
                 .lines(BoxParser.INSTANCE)

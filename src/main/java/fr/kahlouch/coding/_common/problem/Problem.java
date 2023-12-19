@@ -1,4 +1,4 @@
-package fr.kahlouch.coding._common;
+package fr.kahlouch.coding._common.problem;
 
 import java.io.IOException;
 import java.nio.file.Files;

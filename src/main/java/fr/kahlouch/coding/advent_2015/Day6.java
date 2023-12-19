@@ -1,18 +1,17 @@
 package fr.kahlouch.coding.advent_2015;
 
-import fr.kahlouch.coding._common.Problem;
-import fr.kahlouch.coding._common.Responses;
 import fr.kahlouch.coding._common.geometry.Grid2D;
 import fr.kahlouch.coding._common.geometry.Point2D;
 import fr.kahlouch.coding._common.input.Input;
 import fr.kahlouch.coding._common.input.parse.Parser;
+import fr.kahlouch.coding._common.problem.AdventProblem;
 
 import java.nio.file.Path;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
-class Day6 extends Problem {
+class Day6 extends AdventProblem {
     public static void main(String[] args) {
         new Day6();
     }
@@ -21,15 +20,7 @@ class Day6 extends Problem {
         super(5);
     }
 
-    @Override
-    protected Object resolve(Path inputPath) {
-        return Responses.of(
-                resolve1(inputPath),
-                resolve2(inputPath)
-        );
-    }
-
-    private Object resolve1(Path inputPath) {
+    protected Object resolve1(Path inputPath) {
         final var grid = Grid2D.booleanGrid(1000, 1000, false);
         Input.of(inputPath).multiLines()
                 .lines(CommandParser.INSTANCE)
@@ -39,7 +30,7 @@ class Day6 extends Problem {
                 .count();
     }
 
-    private Object resolve2(Path inputPath) {
+    protected Object resolve2(Path inputPath) {
         final var grid = Grid2D.intGrid(1000, 1000, 0);
         Input.of(inputPath).multiLines()
                 .lines(CommandParser.INSTANCE)

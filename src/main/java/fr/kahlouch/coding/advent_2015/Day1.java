@@ -1,14 +1,13 @@
 package fr.kahlouch.coding.advent_2015;
 
-import fr.kahlouch.coding._common.Problem;
-import fr.kahlouch.coding._common.Responses;
 import fr.kahlouch.coding._common.input.Input;
 import fr.kahlouch.coding._common.input.parse.Parser;
+import fr.kahlouch.coding._common.problem.AdventProblem;
 
 import java.nio.file.Path;
 import java.util.concurrent.atomic.AtomicInteger;
 
-class Day1 extends Problem {
+class Day1 extends AdventProblem {
     private Day1() {
         super(11);
     }
@@ -17,15 +16,7 @@ class Day1 extends Problem {
         new Day1();
     }
 
-    @Override
-    protected Object resolve(Path inputPath) {
-        return Responses.of(
-                resolve1(inputPath),
-                resolve2(inputPath)
-        );
-    }
-
-    private Object resolve1(Path inputPath) {
+    protected Object resolve1(Path inputPath) {
         final var floor = new AtomicInteger(0);
         Input.of(inputPath).line()
                 .chars(DirectionParser.INSTANCE)
@@ -33,7 +24,7 @@ class Day1 extends Problem {
         return floor;
     }
 
-    private Object resolve2(Path inputPath) {
+    protected Object resolve2(Path inputPath) {
         final var floor = new AtomicInteger(0);
         return Input.of(inputPath).line()
                 .chars(DirectionParser.INSTANCE)

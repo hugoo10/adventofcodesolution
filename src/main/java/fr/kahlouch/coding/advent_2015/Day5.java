@@ -1,14 +1,13 @@
 package fr.kahlouch.coding.advent_2015;
 
-import fr.kahlouch.coding._common.Problem;
-import fr.kahlouch.coding._common.Responses;
 import fr.kahlouch.coding._common.input.Input;
+import fr.kahlouch.coding._common.problem.AdventProblem;
 
 import java.nio.file.Path;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
-class Day5 extends Problem {
+class Day5 extends AdventProblem {
     public static void main(String[] args) {
         new Day5();
     }
@@ -17,17 +16,7 @@ class Day5 extends Problem {
         super(9);
     }
 
-    @Override
-    protected Object resolve(Path inputPath) {
-        return Responses.of(
-                resolve1(inputPath),
-                resolve2(inputPath)
-        );
-    }
-
-
-
-    private Object resolve1(Path inputPath) {
+    protected Object resolve1(Path inputPath) {
         final Predicate<String> contains3Vowels = str -> Pattern.matches("^.*[aeiou].*[aeiou].*[aeiou].*$", str);
         final Predicate<String> contains2LettersTwiceInARow = str -> Pattern.matches("^.*(.)\\1.*$", str);
         final Predicate<String> containsForbiddenStrings = str ->
@@ -43,7 +32,7 @@ class Day5 extends Problem {
                 .count();
     }
 
-    private Object resolve2(Path inputPath) {
+    protected Object resolve2(Path inputPath) {
         final Predicate<String> containsPairTwice = str -> Pattern.matches("^.*(.{2}).*\\1.*$", str);
         final Predicate<String> containsLetterSandwich = str -> Pattern.matches("^.*(.).\\1.*$", str);
         final Predicate<String> isNice = containsPairTwice.and(containsLetterSandwich);

@@ -1,16 +1,15 @@
 package fr.kahlouch.coding.advent_2015;
 
-import fr.kahlouch.coding._common.Problem;
-import fr.kahlouch.coding._common.Responses;
 import fr.kahlouch.coding._common.geometry.Direction;
 import fr.kahlouch.coding._common.geometry.Point2D;
 import fr.kahlouch.coding._common.input.Input;
 import fr.kahlouch.coding._common.input.parse.Parser;
+import fr.kahlouch.coding._common.problem.AdventProblem;
 
 import java.nio.file.Path;
 import java.util.HashSet;
 
-class Day3 extends Problem {
+class Day3 extends AdventProblem {
     private Day3() {
         super(4);
     }
@@ -19,15 +18,7 @@ class Day3 extends Problem {
         new Day3();
     }
 
-    @Override
-    protected Object resolve(Path inputPath) {
-        return Responses.of(
-                resolve1(inputPath),
-                resolve2(inputPath)
-        );
-    }
-
-    private Object resolve1(Path inputPath) {
+    protected Object resolve1(Path inputPath) {
         var point = new Point2D(0, 0);
         final var visitedPoints = new HashSet<Point2D>();
         visitedPoints.add(point);
@@ -38,7 +29,7 @@ class Day3 extends Problem {
         return visitedPoints.size();
     }
 
-    private Object resolve2(Path inputPath) {
+    protected Object resolve2(Path inputPath) {
         var santa = new Point2D(0, 0);
         var robot = new Point2D(0, 0);
         final var visitedPoints = new HashSet<Point2D>();
