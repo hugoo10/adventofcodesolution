@@ -16,4 +16,8 @@ public final class RegexAnalyzer {
     public String group(int i) {
         return matcher.group(i);
     }
+
+    public double groupDouble(int i) {
+        return Double.parseDouble(group(i));
+    }
 }

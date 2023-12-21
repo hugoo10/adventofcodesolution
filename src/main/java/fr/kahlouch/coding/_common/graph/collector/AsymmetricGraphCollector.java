@@ -16,7 +16,7 @@ import java.util.stream.Collector;
 
 import static java.util.stream.Collector.Characteristics.UNORDERED;
 
-public class SymmetricGraphCollector implements Collector<Connection, Map<String, Node>, Graph> {
+public class AsymmetricGraphCollector implements Collector<Connection, Map<String, Node>, Graph> {
     @Override
     public Supplier<Map<String, Node>> supplier() {
         return TreeMap::new;
@@ -26,9 +26,7 @@ public class SymmetricGraphCollector implements Collector<Connection, Map<String
     public BiConsumer<Map<String, Node>, Connection> accumulator() {
         return (map, connection) -> {
             map.putIfAbsent(connection.from(), new Node(connection.from()));
-            map.putIfAbsent(connection.to(), new Node(connection.to()));
             map.get(connection.from()).addLinkedNode(map.get(connection.to()), connection.weight());
-            map.get(connection.to()).addLinkedNode(map.get(connection.from()), connection.weight());
         };
     }
 

@@ -16,15 +16,22 @@ class Day9 extends AdventProblem {
 
     @Override
     protected Object resolve1(Path inputPath) {
-        final var graph = Input.of(inputPath).multiLines()
+        return Input.of(inputPath).multiLines()
                 .lines(ConnectionParser.INSTANCE)
-                .collect(new SymmetricGraphCollector());
-        return null;
+                .collect(new SymmetricGraphCollector())
+                .voyageurDeCommerce()
+                .exact()
+                .weight();
     }
 
     @Override
     protected Object resolve2(Path inputPath) {
-        return null;
+        return Input.of(inputPath).multiLines()
+                .lines(ConnectionParser.INSTANCE)
+                .collect(new SymmetricGraphCollector())
+                .voyageurDeCommerce()
+                .exactInverse()
+                .weight();
     }
 
     private enum ConnectionParser implements Parser<Connection> {
@@ -36,7 +43,7 @@ class Day9 extends AdventProblem {
             final var matcher = CONNECTION_REGEX.analyze(input);
             final var from = matcher.group(1);
             final var to = matcher.group(2);
-            final var weight = Double.parseDouble(matcher.group(3));
+            final var weight = matcher.groupDouble(3);
             return new Connection(from, to, weight);
         }
     }
