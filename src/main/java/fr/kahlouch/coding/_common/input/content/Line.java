@@ -1,6 +1,7 @@
 package fr.kahlouch.coding._common.input.content;
 
 import fr.kahlouch.coding._common.input.parse.Parser;
+import fr.kahlouch.coding._common.string.StringUtils;
 
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
@@ -8,7 +9,7 @@ import java.util.stream.Stream;
 public record Line(String content) {
 
     public Stream<String> chars() {
-        return this.content.chars().mapToObj(i -> "" + (char) i);
+        return StringUtils.charStream(this.content);
     }
 
     public <T> Stream<T> chars(Parser<T> parser) {

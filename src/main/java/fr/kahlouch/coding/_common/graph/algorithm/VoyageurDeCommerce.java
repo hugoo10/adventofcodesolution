@@ -28,8 +28,4 @@ public record VoyageurDeCommerce(Graph graph, boolean inverse) {
         );
         return buildAllPropositions(subPaths);
     }
-
-    public GraphPath approche() {
-        return null;
-    }
 }

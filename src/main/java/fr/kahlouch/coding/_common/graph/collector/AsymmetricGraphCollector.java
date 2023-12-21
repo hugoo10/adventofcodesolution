@@ -16,7 +16,8 @@ import java.util.stream.Collector;
 
 import static java.util.stream.Collector.Characteristics.UNORDERED;
 
-public class AsymmetricGraphCollector implements Collector<Connection, Map<String, Node>, Graph> {
+public enum AsymmetricGraphCollector implements Collector<Connection, Map<String, Node>, Graph> {
+    INSTANCE;
     @Override
     public Supplier<Map<String, Node>> supplier() {
         return TreeMap::new;
