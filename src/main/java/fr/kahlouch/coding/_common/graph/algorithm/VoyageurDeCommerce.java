@@ -3,22 +3,14 @@ package fr.kahlouch.coding._common.graph.algorithm;
 import fr.kahlouch.coding._common.graph.Graph;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-public record VoyageurDeCommerce(Graph graph) {
+public record VoyageurDeCommerce(Graph graph, boolean inverse) {
     public GraphPath exact() {
         final var start = graph.nodes().stream().map(GraphPath::new).toList();
         return buildAllPropositions(start).stream()
-                .min(Comparator.comparing(GraphPath::weight))
-                .get();
-    }
-
-    public GraphPath exactInverse() {
-        final var start = graph.nodes().stream().map(GraphPath::new).toList();
-        return buildAllPropositions(start).stream()
-                .max(Comparator.comparing(GraphPath::weight))
+                .min(inverse ? GraphPath.LONGEST : GraphPath.SHORTEST)
                 .get();
     }
 

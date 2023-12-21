@@ -6,11 +6,14 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class GraphPath {
+    public static final Comparator<GraphPath> SHORTEST = Comparator.comparing(GraphPath::weight);
+    public static final Comparator<GraphPath> LONGEST = Comparator.comparing(GraphPath::weight, Comparator.reverseOrder());
     private List<Node> path;
     private List<Double> weights;
 

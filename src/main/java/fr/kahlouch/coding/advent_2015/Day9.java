@@ -29,8 +29,8 @@ class Day9 extends AdventProblem {
         return Input.of(inputPath).multiLines()
                 .lines(ConnectionParser.INSTANCE)
                 .collect(new SymmetricGraphCollector())
-                .voyageurDeCommerce()
-                .exactInverse()
+                .voyageurDeCommerceInverse()
+                .exact()
                 .weight();
     }
 
