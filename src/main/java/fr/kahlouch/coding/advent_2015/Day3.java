@@ -29,7 +29,7 @@ class Day3 extends AdventProblem {
         return visitedPoints.size();
     }
 
-    protected Object resolve2(Path inputPath) {
+    protected Object resolve2(Path inputPath, Object response1) {
         var santa = new Point2D(0, 0);
         var robot = new Point2D(0, 0);
         final var visitedPoints = new HashSet<Point2D>();

@@ -37,7 +37,7 @@ class Day7 extends AdventProblem {
     }
 
     @Override
-    protected Object resolve2(Path inputPath) {
+    protected Object resolve2(Path inputPath, Object response1) {
         final var unresolved = Input.of(inputPath).multiLines()
                 .lines(FormulaParser.INSTANCE)
                 .map(f -> {

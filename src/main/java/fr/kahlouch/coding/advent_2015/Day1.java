@@ -24,7 +24,7 @@ class Day1 extends AdventProblem {
         return floor;
     }
 
-    protected Object resolve2(Path inputPath) {
+    protected Object resolve2(Path inputPath, Object response1) {
         final var floor = new AtomicInteger(0);
         return Input.of(inputPath).line()
                 .chars(DirectionParser.INSTANCE)

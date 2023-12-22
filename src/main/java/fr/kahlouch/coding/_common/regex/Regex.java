@@ -1,5 +1,6 @@
 package fr.kahlouch.coding._common.regex;
 
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
 public final class Regex {
@@ -13,5 +14,8 @@ public final class Regex {
         return new RegexAnalyzer(input, pattern);
     }
 
+    public Predicate<String> toPredicate() {
+        return str -> pattern.matcher(str).matches();
+    }
 
 }

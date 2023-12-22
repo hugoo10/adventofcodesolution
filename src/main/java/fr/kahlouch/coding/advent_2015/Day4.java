@@ -26,7 +26,7 @@ class Day4 extends AdventProblem {
         }
     }
 
-    protected Object resolve2(Path inputPath) {
+    protected Object resolve2(Path inputPath, Object response1) {
         final var start = Input.of(inputPath).line().content();
         final Predicate<String> startWith6Zeros = str -> str.startsWith("000000");
         for (var i = 0; ; i++) {

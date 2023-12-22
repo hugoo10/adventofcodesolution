@@ -24,7 +24,7 @@ class Day2 extends AdventProblem {
                 .mapToLong(Box::computeWrappingArea)
                 .sum();
     }
-    protected Object resolve2(Path inputPath) {
+    protected Object resolve2(Path inputPath, Object response1) {
         return Input.of(inputPath)
                 .multiLines()
                 .lines(BoxParser.INSTANCE)

@@ -30,7 +30,7 @@ class Day6 extends AdventProblem {
                 .count();
     }
 
-    protected Object resolve2(Path inputPath) {
+    protected Object resolve2(Path inputPath, Object response1) {
         final var grid = Grid2D.intGrid(1000, 1000, 0);
         Input.of(inputPath).multiLines()
                 .lines(CommandParser.INSTANCE)

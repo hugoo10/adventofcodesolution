@@ -32,7 +32,7 @@ class Day5 extends AdventProblem {
                 .count();
     }
 
-    protected Object resolve2(Path inputPath) {
+    protected Object resolve2(Path inputPath, Object response1) {
         final Predicate<String> containsPairTwice = str -> Pattern.matches("^.*(.{2}).*\\1.*$", str);
         final Predicate<String> containsLetterSandwich = str -> Pattern.matches("^.*(.).\\1.*$", str);
         final Predicate<String> isNice = containsPairTwice.and(containsLetterSandwich);

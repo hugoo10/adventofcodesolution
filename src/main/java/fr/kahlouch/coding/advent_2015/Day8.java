@@ -19,7 +19,7 @@ class Day8 extends AdventProblem {
     }
 
     @Override
-    protected Object resolve2(Path inputPath) {
+    protected Object resolve2(Path inputPath, Object response1) {
         return Input.of(inputPath).multiLines()
                 .lines(this::reverse)
                 .mapToLong(i -> i)

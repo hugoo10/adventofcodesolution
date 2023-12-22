@@ -13,13 +13,14 @@ public abstract class AdventProblem extends Problem {
 
     @Override
     protected Object resolve(Path inputPath) {
+        final var response1 = resolve1(inputPath);
         return Responses.of(
-                resolve1(inputPath),
-                resolve2(inputPath)
+                response1,
+                resolve2(inputPath, response1)
         );
     }
 
     protected abstract Object resolve1(Path inputPath);
 
-    protected abstract Object resolve2(Path inputPath);
+    protected abstract Object resolve2(Path inputPath, Object response1);
 }

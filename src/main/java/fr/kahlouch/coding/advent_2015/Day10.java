@@ -34,7 +34,7 @@ class Day10 extends AdventProblem {
     }
 
     @Override
-    protected Object resolve2(Path inputPath) {
+    protected Object resolve2(Path inputPath, Object response1) {
         var tmp = Input.of(inputPath).line().content();
         for (var i = 0; i < 50; ++i) {
             tmp = StringUtils.charStream(tmp)
