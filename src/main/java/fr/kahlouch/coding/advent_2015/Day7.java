@@ -42,7 +42,7 @@ class Day7 extends AdventProblem {
                 .lines(FormulaParser.INSTANCE)
                 .map(f -> {
                     if (f.id.equals("b")) {
-                        return new Formula("b", "3176");
+                        return new Formula("b", STR."\{response1}");
                     }
                     return f;
                 })
