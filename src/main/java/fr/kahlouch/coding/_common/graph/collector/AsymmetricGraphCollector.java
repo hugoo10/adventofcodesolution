@@ -27,6 +27,7 @@ public enum AsymmetricGraphCollector implements Collector<Connection, Map<String
     public BiConsumer<Map<String, Node>, Connection> accumulator() {
         return (map, connection) -> {
             map.putIfAbsent(connection.from(), new Node(connection.from()));
+            map.putIfAbsent(connection.to(), new Node(connection.to()));
             map.get(connection.from()).addLinkedNode(map.get(connection.to()), connection.weight());
         };
     }

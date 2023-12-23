@@ -1,6 +1,7 @@
 package fr.kahlouch.coding.advent_2015;
 
 import fr.kahlouch.coding._common.graph.Connection;
+import fr.kahlouch.coding._common.graph.algorithm.GraphPath;
 import fr.kahlouch.coding._common.graph.collector.SymmetricGraphCollector;
 import fr.kahlouch.coding._common.input.Input;
 import fr.kahlouch.coding._common.input.parse.Parser;
@@ -20,7 +21,7 @@ class Day9 extends AdventProblem {
                 .lines(ConnectionParser.INSTANCE)
                 .collect(SymmetricGraphCollector.INSTANCE)
                 .voyageurDeCommerce()
-                .exact()
+                .exact(GraphPath.SHORTEST)
                 .weight();
     }
 
@@ -29,8 +30,8 @@ class Day9 extends AdventProblem {
         return Input.of(inputPath).multiLines()
                 .lines(ConnectionParser.INSTANCE)
                 .collect(SymmetricGraphCollector.INSTANCE)
-                .voyageurDeCommerceInverse()
-                .exact()
+                .voyageurDeCommerce()
+                .exact(GraphPath.LONGEST)
                 .weight();
     }
 

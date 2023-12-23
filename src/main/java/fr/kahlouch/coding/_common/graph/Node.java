@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class Node {
+
     private final String id;
     private final List<LinkedNode> linkedNodes;
 
@@ -23,5 +24,18 @@ public class Node {
 
     public List<LinkedNode> linkedNodes() {
         return Collections.unmodifiableList(linkedNodes);
+    }
+
+    @Override
+    public String toString() {
+        return id;
+    }
+
+    public static double weightBetweenNodes(Node from, Node to) {
+        return from.linkedNodes().stream()
+                .filter(ln -> ln.node().equals(to))
+                .findFirst()
+                .get()
+                .weight();
     }
 }

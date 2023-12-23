@@ -18,9 +18,10 @@ public class Graph {
     }
 
     public VoyageurDeCommerce voyageurDeCommerce() {
-        return new VoyageurDeCommerce(this, false);
+        return new VoyageurDeCommerce(this);
     }
-    public VoyageurDeCommerce voyageurDeCommerceInverse() {
-        return new VoyageurDeCommerce(this, true);
+
+    public int size() {
+        return this.nodes.size();
     }
 }
