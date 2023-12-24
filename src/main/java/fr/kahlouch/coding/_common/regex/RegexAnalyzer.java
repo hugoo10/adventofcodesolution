@@ -20,4 +20,8 @@ public final class RegexAnalyzer {
     public double groupDouble(int i) {
         return Double.parseDouble(group(i));
     }
+
+    public long groupLong(int i) {
+        return Long.parseLong(group(i));
+    }
 }
