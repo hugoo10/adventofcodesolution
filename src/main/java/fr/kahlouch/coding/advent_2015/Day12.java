@@ -38,7 +38,7 @@ class Day12 extends AdventProblem {
     @Override
     protected Object resolve2(Path inputPath, Object response1) {
         final var content = Input.of(inputPath).line().content();
-        final var json = new JSONObject(STR."{\"content\":\{content}}");
+        final var json = new JSONObject("{\"content\":"+content+"}");
         return extractNumbers(json).stream().mapToLong(i -> i).sum();
     }
 

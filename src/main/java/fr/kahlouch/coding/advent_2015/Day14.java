@@ -125,9 +125,6 @@ class Day14 extends AdventProblem {
             }
         }
 
-        @Override
-        public String toString() {
-            return STR."DeerState{name='\{name}\{'\''}\{'}'}";
-        }
+
     }
 }

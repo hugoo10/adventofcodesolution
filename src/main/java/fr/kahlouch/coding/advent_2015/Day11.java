@@ -37,9 +37,9 @@ class Day11 extends AdventProblem {
                     final var first = (char) ('a' + i);
                     final var second = (char) ('a' + i + 1);
                     final var third = (char) ('a' + i + 2);
-                    return STR."\{first}\{second}\{third}";
+                    return "" + first + second + third;
                 }).collect(Collectors.joining("|"));
-        private static final Predicate<String> HAS_THREE_LETTERS_ROW = new Regex(STR."^.*(\{THREE_LETTERS_ROW}).*$").toPredicate();
+        private static final Predicate<String> HAS_THREE_LETTERS_ROW = new Regex("^.*("+THREE_LETTERS_ROW+").*$").toPredicate();
         private static final Predicate<String> NOT_CONTAINS_FORBIDEN_LETTER = Predicate.not(new Regex("^.*[iol].*$").toPredicate());
         private static final Predicate<String> IS_VALID = DOUBLE_PAIRS.and(HAS_THREE_LETTERS_ROW).and(NOT_CONTAINS_FORBIDEN_LETTER);
 
