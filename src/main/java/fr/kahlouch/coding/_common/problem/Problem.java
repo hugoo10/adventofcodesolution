@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
@@ -72,7 +73,7 @@ public abstract class Problem {
     }
 
     private void resolveAll() {
-        try (final var testFiles = Files.list(this.testFolder)) {
+        try (final var testFiles = Files.list(this.testFolder).sorted(Comparator.comparing(Path::getFileName)).sequential()) {
             testFiles.forEach(path -> {
                 final var testFileName = path.getFileName().toString().replace(".txt", "").toUpperCase();
                 final var testName = testFileName + ":";
