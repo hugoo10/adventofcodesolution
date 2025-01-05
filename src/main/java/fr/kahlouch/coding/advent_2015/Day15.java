@@ -2,11 +2,12 @@ package fr.kahlouch.coding.advent_2015;
 
 import fr.kahlouch.coding._common.input.Input;
 import fr.kahlouch.coding._common.input.parse.Parser;
+import fr.kahlouch.coding._common.optimization.brut_force.Composition;
+import fr.kahlouch.coding._common.optimization.brut_force.MemoryHungryCompositionGenerator;
 import fr.kahlouch.coding._common.problem.AdventProblem;
 import fr.kahlouch.coding._common.regex.Regex;
 
 import java.nio.file.Path;
-import java.util.*;
 
 class Day15 extends AdventProblem {
     public static void main(String[] args) {
@@ -19,30 +20,30 @@ class Day15 extends AdventProblem {
                 .multiLines()
                 .lines(IngredientParser.INSTANCE)
                 .toList();
-        final var test = buildAllPossibilitiesComplementary(ingredients, new HashMap<>(), 100);
-        return null;
+        return new MemoryHungryCompositionGenerator<Ingredient>().generateAllCompositions(ingredients, 100)
+                .parallelStream()
+                .map(Ingredient::computeCompositionValue)
+                .max(Long::compareTo)
+                .orElseThrow();
+
     }
 
-    private <T> List<Map<T, Long>> buildAllPossibilitiesComplementary(List<T> ingredients, Map<T, Long> map, long total) {
-        final var list = new LinkedList<>(ingredients);
-        final var next = list.poll();
-        if (list.isEmpty()) {
-            final var newMap = new HashMap<>(map);
-            newMap.put(next, total);
-            return List.of(newMap);
-        }
-        final var result = new ArrayList<Map<T, Long>>();
-        for (long i = 0; i <= total; ++i) {
-            final var newMap = new HashMap<>(map);
-            newMap.put(next, i);
-            result.addAll(buildAllPossibilitiesComplementary(list, newMap, total - i));
-        }
-        return result;
-    }
 
     @Override
     protected Object resolve2(Path inputPath, Object response1) {
-        return null;
+        final var ingredients = Input.of(inputPath)
+                .multiLines()
+                .lines(IngredientParser.INSTANCE)
+                .toList();
+        return new MemoryHungryCompositionGenerator<Ingredient>().generateAllCompositions(ingredients, 100)
+                .parallelStream()
+                .filter(composition -> {
+                    final var calories = Ingredient.computeCompositionCalories(composition);
+                    return calories == 500;
+                })
+                .map(Ingredient::computeCompositionValue)
+                .max(Long::compareTo)
+                .orElseThrow();
     }
 
 
@@ -64,25 +65,27 @@ class Day15 extends AdventProblem {
     }
 
     private record Ingredient(String name, long capacity, long durability, long flavor, long texture, long calories) {
-    }
+        public static long computeCompositionValue(Composition<Ingredient> composition) {
+            var capacity = 0L;
+            var durability = 0L;
+            var flavor = 0L;
+            var texture = 0L;
 
-    private static class IngredientWithQuantity {
-        private final Ingredient ingredient;
-        private final long quantity;
-        private final long capacity;
-        private final long durability;
-        private final long flavor;
-        private final long texture;
-        private final long calories;
+            for (final var entry : composition.value().entrySet()) {
+                capacity += (entry.getValue() * entry.getKey().capacity());
+                durability += (entry.getValue() * entry.getKey().durability());
+                flavor += (entry.getValue() * entry.getKey().flavor());
+                texture += (entry.getValue() * entry.getKey().texture());
+            }
 
-        public IngredientWithQuantity(Ingredient ingredient, long quantity) {
-            this.ingredient = ingredient;
-            this.quantity = quantity;
-            this.capacity = quantity * ingredient.capacity();
-            this.durability = quantity * ingredient.durability();
-            this.flavor = quantity * ingredient.flavor();
-            this.texture = quantity * ingredient.texture();
-            this.calories = quantity * ingredient.calories();
+            return Math.max(0, capacity) * Math.max(0, durability) * Math.max(0, flavor) * Math.max(0, texture);
+        }
+
+        public static long computeCompositionCalories(Composition<Ingredient> composition) {
+            return composition.value().entrySet()
+                    .stream()
+                    .mapToLong(entry -> entry.getValue() * entry.getKey().calories())
+                    .sum();
         }
     }
 }
