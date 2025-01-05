@@ -9,10 +9,6 @@ import fr.kahlouch.coding._common.problem.AdventProblem;
 import java.nio.file.Path;
 
 class Day17 extends AdventProblem {
-    public Day17() {
-        super(0);
-    }
-
     public static void main(String[] args) {
         new Day17();
     }

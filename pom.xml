@@ -2,24 +2,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <version>1.0.0</version>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>23</source>
-                    <target>23</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
     <groupId>fr.kahlouch</groupId>
     <artifactId>advent</artifactId>
 
     <properties>
-        <maven.compiler.target>23</maven.compiler.target>
-        <maven.compiler.source>23</maven.compiler.source>
+        <java.version>23</java.version>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
     </properties>
 
     <dependencies>
