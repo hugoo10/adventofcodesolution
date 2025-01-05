@@ -53,7 +53,7 @@ class Day15 extends AdventProblem {
 
         @Override
         public Ingredient parse(String input, long idx) {
-            final var analyzer = INGREDIENT_REGEX.analyze(input);
+            final var analyzer = INGREDIENT_REGEX.match(input);
             String name = analyzer.group(1);
             long capacity = analyzer.groupLong(2);
             long durability = analyzer.groupLong(3);

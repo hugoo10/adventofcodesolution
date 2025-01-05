@@ -55,7 +55,7 @@ class Day13 extends AdventProblem {
 
         @Override
         public Connection parse(String input, long idx) {
-            final var analyzer = regex.analyze(input);
+            final var analyzer = regex.match(input);
             final var from = analyzer.group(1);
             final var winLose = analyzer.group(2);
             final var value = analyzer.groupDouble(3);

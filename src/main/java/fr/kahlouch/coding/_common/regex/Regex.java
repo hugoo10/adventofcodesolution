@@ -10,8 +10,12 @@ public final class Regex {
         this.pattern = Pattern.compile(patternStr);
     }
 
-    public RegexAnalyzer analyze(String input) {
-        return new RegexAnalyzer(input, pattern);
+    public RegexMatcher match(String input) {
+        return new RegexMatcher(input, pattern);
+    }
+
+    public RegexFinder find(String input) {
+        return new RegexFinder(input, pattern);
     }
 
     public Predicate<String> toPredicate() {

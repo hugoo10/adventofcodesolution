@@ -39,7 +39,7 @@ class Day14 extends AdventProblem {
 
         @Override
         public Reindeer parse(String input, long idx) {
-            final var analyzer = REINDEER_REGEX.analyze(input);
+            final var analyzer = REINDEER_REGEX.match(input);
             final var name = analyzer.group(1);
             final var speed = analyzer.groupDouble(2);
             final var flightDuration = analyzer.groupDouble(3);

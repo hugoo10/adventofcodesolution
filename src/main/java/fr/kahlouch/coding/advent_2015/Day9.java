@@ -41,7 +41,7 @@ class Day9 extends AdventProblem {
 
         @Override
         public Connection parse(String input, long idx) {
-            final var matcher = CONNECTION_REGEX.analyze(input);
+            final var matcher = CONNECTION_REGEX.match(input);
             final var from = matcher.group(1);
             final var to = matcher.group(2);
             final var weight = matcher.groupDouble(3);
