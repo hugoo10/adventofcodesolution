@@ -1,7 +1,7 @@
 package fr.kahlouch.coding._common.optimization.sac_a_dos;
 
-public interface KnapsackItem extends Comparable<KnapsackItem> {
-    double cost();
+public interface KnapsackItem {
+    double weight();
 
     double value();
 
